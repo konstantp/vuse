@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "webpack-dev-server --hot --inline --config ./demo/webpack.config.js",
     "build": "cross-env NODE_ENV=production node scripts/build.js",
-    "build:demo": "cross-env NODE_ENV=production webpack --config ./demo/webpack.config.js",
+    "build:demo": "cross-env NODE_ENV=producti..on webpack --config ./demo/webpack.config.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "docs:deploy": "scripts/deploy.sh",
