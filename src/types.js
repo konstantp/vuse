@@ -1,5 +1,9 @@
 export class Avatar {};
 
+export class Numeric {};
+
+export class Logic {};
+
 export class Title {};
 
 export class Text {};

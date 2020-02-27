@@ -2460,6 +2460,8 @@ function toPath(value) {
 }
 
 var Avatar = function Avatar () {};
+var Numeric = function Numeric () {};
+var Logic = function Logic () {};
 var Title = function Title () {};
 var Text = function Text () {};
 var Logo = function Logo () {};
@@ -2472,6 +2474,8 @@ var Grid = function Grid () {};
 
 var types = /*#__PURE__*/Object.freeze({
   Avatar: Avatar,
+  Numeric: Numeric,
+  Logic: Logic,
   Title: Title,
   Text: Text,
   Logo: Logo,
@@ -3772,7 +3776,9 @@ function cleanDOM (artboard) {
 var ASSETS_DIR = '.';
 var data = new Map([
   [Title, 'Awesome title'],
-  [Text, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'],
+  [Text, ''],
+  [Numeric, 0],
+  [Logic, false],
   [Avatar, (ASSETS_DIR + "/img/avatar.png")],
   [Logo, (ASSETS_DIR + "/img/google.svg")],
   [Link, 'http://example.com'],

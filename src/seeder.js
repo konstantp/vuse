@@ -4,7 +4,9 @@ import { isObject } from './util';
 const ASSETS_DIR = '.';
 const data = new Map([
   [types.Title, 'Awesome title'],
-  [types.Text, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'],
+  [types.Text, ''],
+  [types.Numeric, 0],
+  [types.Logic, false],
   [types.Avatar, `${ASSETS_DIR}/img/avatar.png`],
   [types.Logo, `${ASSETS_DIR}/img/google.svg`],
   [types.Link, 'http://example.com'],
