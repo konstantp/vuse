@@ -1,7 +1,7 @@
 <template lang="pug">
   #artboard.artboard
     component(v-for='section in $builder.sections'
-      :is='section.slug'
+      :is='section.name'
       :key='section.id'
       :id='section.id'
     )

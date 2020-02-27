@@ -13,7 +13,7 @@ export default class Section {
   constructor (options) {
     this.id = counter++;
     options = Object.assign({}, SECTION_OPTIONS, options);
-    this.slug = options.slug;
+    this.name = options.name;
     this.schema = options.schema;
     this.data = options.data || Seeder.seed(options.schema);
     this.stylers = [];

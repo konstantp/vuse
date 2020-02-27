@@ -136,7 +136,7 @@ class Vuse {
     // reoslve the component name automatically.
     if (typeof name === 'object') {
       definition = name;
-      name = definition.slug;
+      name = definition.name;
     }
 
     // if passed a plain object
@@ -205,12 +205,12 @@ class Vuse {
     if (data.sections && Array.isArray(data.sections)) {
       this.sections = data.sections.map(section => {
         const sectionData = {
-          slug: section.slug,
+          name: section.name,
           schema: section.schema,
           data: section.data
         };
         if (!sectionData.schema) {
-          sectionData.schema = this.components[sectionData.slug].options.$schema
+          sectionData.schema = this.components[sectionData.name].options.$schema
         }
 
         return new Section(sectionData);
@@ -225,7 +225,7 @@ class Vuse {
     return {
       title: this.title,
       sections: this.sections.map(s => ({
-        slug: s.slug,
+        name: s.name,
         data: s.data
       }))
     };
