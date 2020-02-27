@@ -137,14 +137,14 @@ export default {
     },
     gridValue: function () {
       this.gridValue = Math.min(Math.max(this.gridValue, 0), 12);
-      this.section.set(this.name, (grid) => {
+      this.section.set(this.slug, (grid) => {
         grid[this.device] = this.gridValue;
       });
     }
   },
   created () {
     if (this.type === 'button') {
-      this.url = this.section.get(`${this.name}.href`);
+      this.url = this.section.get(`${this.slug}.href`);
       this.el.contentEditable = 'true';
     }
     if (this.type === 'text') {
@@ -172,7 +172,7 @@ export default {
       })
     },
     addLink () {
-      this.section.set(`${this.name}.href`, this.url);
+      this.section.set(`${this.slug}.href`, this.url);
     },
     changeColor () {
       this.removeClass(`is-${this.oldColorerColor}`);
@@ -180,7 +180,7 @@ export default {
       this.addClass(`is-${this.colorerColor}`);
     },
     addClass (className) {
-      this.section.set(this.name, (value) => {
+      this.section.set(this.slug, (value) => {
         if (value && value.classes && Array.isArray(value.classes)) {
           value = value.classes;
         }
@@ -188,7 +188,7 @@ export default {
       });
     },
     selectDevice (device) {
-      const gridValue = this.section.get(this.name)[device];
+      const gridValue = this.section.get(this.slug)[device];
       this.updateOption('columnWidth');
       this.device = device;
       this.gridValue = gridValue;
@@ -199,7 +199,7 @@ export default {
           this.removeClass(c);
         });
       }
-      this.section.set(this.name, value => {
+      this.section.set(this.slug, value => {
         if (value && value.classes && Array.isArray(value.classes)) {
           value = value.classes;
         }
@@ -247,11 +247,11 @@ export default {
         return;
       }
       if (this.type === 'button') {
-        this.section.set(`${this.name}.text`, this.el.innerHTML);
+        this.section.set(`${this.slug}.text`, this.el.innerHTML);
         return;
       }
 
-      this.section.set(this.name, this.el.innerHTML);
+      this.section.set(this.slug, this.el.innerHTML);
     }
   }
 };

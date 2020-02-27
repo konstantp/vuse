@@ -5,7 +5,7 @@
       :class="{ 'is-sorting': $builder.isSorting, 'is-editable': $builder.isEditing }"
     )
       component(v-for='section in $builder.sections'
-        :is='section.name'
+        :is='section.slug'
         :key='section.id'
         :id='section.id'
       )
@@ -76,7 +76,7 @@
               @drag="currentSection = section"
             )
               img.menu-elementImage(v-if="section.cover" :src="section.cover")
-              span.menu-elementTitle {{ section.name }}
+              span.menu-elementTitle {{ section.slug }}
 
 </template>
 
