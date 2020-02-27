@@ -3816,7 +3816,7 @@ var counter = 0;
 var Section = function Section (options) {
   this.id = counter++;
   options = Object.assign({}, SECTION_OPTIONS, options);
-  this.slug = options.slug;
+  this.name = options.name;
   this.schema = options.schema;
   this.data = options.data || Seeder.seed(options.schema);
   this.stylers = [];
@@ -5642,7 +5642,7 @@ var script = {
 /* script */
             var __vue_script__ = script;
 /* template */
-var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{ref:"artboard",staticClass:"artboard",class:{ 'is-sorting': _vm.$builder.isSorting, 'is-editable': _vm.$builder.isEditing },attrs:{"id":"artboard"}},_vm._l((_vm.$builder.sections),function(section){return _c(section.slug,{key:section.id,tag:"component",attrs:{"id":section.id}})})),_c('div',{staticClass:"controller"},[(_vm.showIntro && !this.$builder.sections.length)?_c('div',{staticClass:"controller-intro"},[_c('label',{attrs:{"for":"projectName"}},[_vm._v("Hello, start your project")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.title),expression:"title"}],staticClass:"controller-input",attrs:{"id":"projectName","placeholder":"project name"},domProps:{"value":(_vm.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.title=$event.target.value;}}}),(_vm.themes)?[_c('div',{staticClass:"controller-themes"},_vm._l((_vm.themes),function(theme){return _c('button',{staticClass:"controller-theme",on:{"click":function($event){_vm.addTheme(theme);}}},[_vm._v(_vm._s(theme.name))])}))]:_vm._e()],2):_vm._e(),_c('div',{staticClass:"controller-panel"},[_c('button',{staticClass:"controller-button is-green",attrs:{"tooltip-position":"top","tooltip":"export"},on:{"click":_vm.submit}},[_c('VuseIcon',{attrs:{"name":"download"}})],1),(!_vm.tempSections)?_c('button',{staticClass:"controller-button is-red",attrs:{"tooltip-position":"top","tooltip":"clear sections"},on:{"click":_vm.clearSections}},[_c('VuseIcon',{attrs:{"name":"trash"}})],1):_vm._e(),(_vm.tempSections)?_c('button',{staticClass:"controller-button is-gray",attrs:{"tooltip-position":"top","tooltip":"undo"},on:{"click":_vm.undo}},[_c('VuseIcon',{attrs:{"name":"undo"}})],1):_vm._e(),_c('button',{staticClass:"controller-button is-blue",class:{ 'is-red': _vm.$builder.isSorting },attrs:{"tooltip-position":"top","tooltip":"sorting"},on:{"click":_vm.toggleSort}},[_c('VuseIcon',{attrs:{"name":"sort"}})],1),_c('button',{staticClass:"controller-button is-blue",class:{ 'is-red': _vm.listShown, 'is-rotated': _vm.listShown },attrs:{"tooltip-position":"top","tooltip":"add section","disabled":!_vm.$builder.isEditing},on:{"click":_vm.newSection}},[_c('VuseIcon',{attrs:{"name":"plus"}})],1)])]),_c('ul',{ref:"menu",staticClass:"menu",class:{ 'is-visiable': _vm.listShown }},_vm._l((_vm.groups),function(group,name){return (group.length)?_c('li',{staticClass:"menu-group"},[_c('div',{staticClass:"menu-header",on:{"click":_vm.toggleGroupVisibility}},[_c('span',{staticClass:"menu-title"},[_vm._v(_vm._s(name))]),_c('span',{staticClass:"menu-icon"},[_c('VuseIcon',{attrs:{"name":"arrowDown"}})],1)]),_c('div',{staticClass:"menu-body"},[_vm._l((group),function(section){return [_c('a',{staticClass:"menu-element",on:{"click":function($event){_vm.addSection(section);},"drag":function($event){_vm.currentSection = section;}}},[(section.cover)?_c('img',{staticClass:"menu-elementImage",attrs:{"src":section.cover}}):_vm._e(),_c('span',{staticClass:"menu-elementTitle"},[_vm._v(_vm._s(section.slug))])])]})],2)]):_vm._e()}))])};
+var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{ref:"artboard",staticClass:"artboard",class:{ 'is-sorting': _vm.$builder.isSorting, 'is-editable': _vm.$builder.isEditing },attrs:{"id":"artboard"}},_vm._l((_vm.$builder.sections),function(section){return _c(section.name,{key:section.id,tag:"component",attrs:{"id":section.id}})})),_c('div',{staticClass:"controller"},[(_vm.showIntro && !this.$builder.sections.length)?_c('div',{staticClass:"controller-intro"},[_c('label',{attrs:{"for":"projectName"}},[_vm._v("Hello, start your project")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.title),expression:"title"}],staticClass:"controller-input",attrs:{"id":"projectName","placeholder":"project name"},domProps:{"value":(_vm.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.title=$event.target.value;}}}),(_vm.themes)?[_c('div',{staticClass:"controller-themes"},_vm._l((_vm.themes),function(theme){return _c('button',{staticClass:"controller-theme",on:{"click":function($event){_vm.addTheme(theme);}}},[_vm._v(_vm._s(theme.name))])}))]:_vm._e()],2):_vm._e(),_c('div',{staticClass:"controller-panel"},[_c('button',{staticClass:"controller-button is-green",attrs:{"tooltip-position":"top","tooltip":"export"},on:{"click":_vm.submit}},[_c('VuseIcon',{attrs:{"name":"download"}})],1),(!_vm.tempSections)?_c('button',{staticClass:"controller-button is-red",attrs:{"tooltip-position":"top","tooltip":"clear sections"},on:{"click":_vm.clearSections}},[_c('VuseIcon',{attrs:{"name":"trash"}})],1):_vm._e(),(_vm.tempSections)?_c('button',{staticClass:"controller-button is-gray",attrs:{"tooltip-position":"top","tooltip":"undo"},on:{"click":_vm.undo}},[_c('VuseIcon',{attrs:{"name":"undo"}})],1):_vm._e(),_c('button',{staticClass:"controller-button is-blue",class:{ 'is-red': _vm.$builder.isSorting },attrs:{"tooltip-position":"top","tooltip":"sorting"},on:{"click":_vm.toggleSort}},[_c('VuseIcon',{attrs:{"name":"sort"}})],1),_c('button',{staticClass:"controller-button is-blue",class:{ 'is-red': _vm.listShown, 'is-rotated': _vm.listShown },attrs:{"tooltip-position":"top","tooltip":"add section","disabled":!_vm.$builder.isEditing},on:{"click":_vm.newSection}},[_c('VuseIcon',{attrs:{"name":"plus"}})],1)])]),_c('ul',{ref:"menu",staticClass:"menu",class:{ 'is-visiable': _vm.listShown }},_vm._l((_vm.groups),function(group,name){return (group.length)?_c('li',{staticClass:"menu-group"},[_c('div',{staticClass:"menu-header",on:{"click":_vm.toggleGroupVisibility}},[_c('span',{staticClass:"menu-title"},[_vm._v(_vm._s(name))]),_c('span',{staticClass:"menu-icon"},[_c('VuseIcon',{attrs:{"name":"arrowDown"}})],1)]),_c('div',{staticClass:"menu-body"},[_vm._l((group),function(section){return [_c('a',{staticClass:"menu-element",on:{"click":function($event){_vm.addSection(section);},"drag":function($event){_vm.currentSection = section;}}},[(section.cover)?_c('img',{staticClass:"menu-elementImage",attrs:{"src":section.cover}}):_vm._e(),_c('span',{staticClass:"menu-elementTitle"},[_vm._v(_vm._s(section.name))])])]})],2)]):_vm._e()}))])};
 var __vue_staticRenderFns__ = [];
 
   /* style */
@@ -5791,7 +5791,7 @@ var script$1 = {
             var __vue_script__$1 = script$1;
             
 /* template */
-var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"artboard",attrs:{"id":"artboard"}},_vm._l((_vm.$builder.sections),function(section){return _c(section.slug,{key:section.id,tag:"component",attrs:{"id":section.id}})}))};
+var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"artboard",attrs:{"id":"artboard"}},_vm._l((_vm.$builder.sections),function(section){return _c(section.name,{key:section.id,tag:"component",attrs:{"id":section.id}})}))};
 var __vue_staticRenderFns__$1 = [];
 
   /* style */
@@ -8488,14 +8488,14 @@ var script$2 = {
       var this$1 = this;
 
       this.gridValue = Math.min(Math.max(this.gridValue, 0), 12);
-      this.section.set(this.slug, function (grid) {
+      this.section.set(this.name, function (grid) {
         grid[this$1.device] = this$1.gridValue;
       });
     }
   },
   created: function created () {
     if (this.type === 'button') {
-      this.url = this.section.get(((this.slug) + ".href"));
+      this.url = this.section.get(((this.name) + ".href"));
       this.el.contentEditable = 'true';
     }
     if (this.type === 'text') {
@@ -8525,7 +8525,7 @@ var script$2 = {
       });
     },
     addLink: function addLink () {
-      this.section.set(((this.slug) + ".href"), this.url);
+      this.section.set(((this.name) + ".href"), this.url);
     },
     changeColor: function changeColor () {
       this.removeClass(("is-" + (this.oldColorerColor)));
@@ -8533,7 +8533,7 @@ var script$2 = {
       this.addClass(("is-" + (this.colorerColor)));
     },
     addClass: function addClass (className) {
-      this.section.set(this.slug, function (value) {
+      this.section.set(this.name, function (value) {
         if (value && value.classes && Array.isArray(value.classes)) {
           value = value.classes;
         }
@@ -8541,7 +8541,7 @@ var script$2 = {
       });
     },
     selectDevice: function selectDevice (device) {
-      var gridValue = this.section.get(this.slug)[device];
+      var gridValue = this.section.get(this.name)[device];
       this.updateOption('columnWidth');
       this.device = device;
       this.gridValue = gridValue;
@@ -8554,7 +8554,7 @@ var script$2 = {
           this$1.removeClass(c);
         });
       }
-      this.section.set(this.slug, function (value) {
+      this.section.set(this.name, function (value) {
         if (value && value.classes && Array.isArray(value.classes)) {
           value = value.classes;
         }
@@ -8604,11 +8604,11 @@ var script$2 = {
         return;
       }
       if (this.type === 'button') {
-        this.section.set(((this.slug) + ".text"), this.el.innerHTML);
+        this.section.set(((this.name) + ".text"), this.el.innerHTML);
         return;
       }
 
-      this.section.set(this.slug, this.el.innerHTML);
+      this.section.set(this.name, this.el.innerHTML);
     }
   }
 };
@@ -8942,7 +8942,7 @@ Vuse.prototype.component = function component (name, definition) {
   // reoslve the component name automatically.
   if (typeof name === 'object') {
     definition = name;
-    name = definition.slug;
+    name = definition.name;
   }
 
   // if passed a plain object
@@ -9019,12 +9019,12 @@ Vuse.prototype.set = function set (data) {
   if (data.sections && Array.isArray(data.sections)) {
     this.sections = data.sections.map(function (section) {
       var sectionData = {
-        slug: section.slug,
+        name: section.name,
         schema: section.schema,
         data: section.data
       };
       if (!sectionData.schema) {
-        sectionData.schema = this$1.components[sectionData.slug].options.$schema;
+        sectionData.schema = this$1.components[sectionData.name].options.$schema;
       }
 
       return new Section(sectionData);
@@ -9039,7 +9039,7 @@ Vuse.prototype.toJSON = function toJSON () {
   return {
     title: this.title,
     sections: this.sections.map(function (s) { return ({
-      slug: s.slug,
+      name: s.name,
       data: s.data
     }); })
   };
