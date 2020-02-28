@@ -5,7 +5,7 @@ const ASSETS_DIR = '.';
 const data = new Map([
   [types.Title, 'Awesome title'],
   [types.Text, ''],
-  [types.Numeric, 0],
+  [types.Numeric, 1],
   [types.Logic, false],
   [types.Avatar, `${ASSETS_DIR}/img/avatar.png`],
   [types.Logo, `${ASSETS_DIR}/img/google.svg`],
