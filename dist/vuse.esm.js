@@ -3789,7 +3789,7 @@ var data = new Map([
   [Button, function () { return ({ text: 'Click Me!', classes: [], href: 'http://example.com' }); }],
   [Quote, 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'],
   [Grid, function () { return ({mobile: '', tablet: '', desktop: '', widescreen: ''}); }],
-  [FiltersGroup, function () { return ({'from': 'yesterday', 'until': 'today', 'filters': []}); }],
+  [FiltersGroup, function () { return ({'from': 'today', 'until': 'tomorrow', 'filters': []}); }],
   [Number, 100],
   [String, 'This is pretty neat']
 ]);
