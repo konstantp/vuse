@@ -15,6 +15,7 @@ const data = new Map([
   [types.Button, () => ({ text: 'Click Me!', classes: [], href: 'http://example.com' })],
   [types.Quote, 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'],
   [types.Grid, () => ({mobile: '', tablet: '', desktop: '', widescreen: ''})],
+  [types.FiltersGroup, () => ({'from': 'yesterday', 'until': 'today', 'filters': []})],
   [Number, 100],
   [String, 'This is pretty neat']
 ]);
