@@ -5514,6 +5514,7 @@
       this.title = this.$builder.title;
       this.themes = this.$builder.themes;
       this.generateGroups();
+      this.$set(this, 'sections', this.getSections());
     },
     mounted: function mounted () {
       var this$1 = this;

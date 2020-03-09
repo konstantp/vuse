@@ -129,6 +129,7 @@ export default {
     this.title = this.$builder.title;
     this.themes = this.$builder.themes;
     this.generateGroups();
+    this.$set(this, 'sections', this.getSections());
   },
   mounted () {
     this.$builder.rootEl = this.$refs.artboard;
