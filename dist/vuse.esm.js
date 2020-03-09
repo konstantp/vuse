@@ -2471,6 +2471,7 @@ var Link = function Link () {};
 var ClassList = function ClassList () {};
 var Button = function Button () {};
 var Grid = function Grid () {};
+var FiltersGroup = function FiltersGroup () {};
 
 var types = /*#__PURE__*/Object.freeze({
   Avatar: Avatar,
@@ -2484,7 +2485,8 @@ var types = /*#__PURE__*/Object.freeze({
   Link: Link,
   ClassList: ClassList,
   Button: Button,
-  Grid: Grid
+  Grid: Grid,
+  FiltersGroup: FiltersGroup
 });
 
 /**
@@ -3777,7 +3779,7 @@ var ASSETS_DIR = '.';
 var data = new Map([
   [Title, 'Awesome title'],
   [Text, ''],
-  [Numeric, 0],
+  [Numeric, 1],
   [Logic, false],
   [Avatar, (ASSETS_DIR + "/img/avatar.png")],
   [Logo, (ASSETS_DIR + "/img/google.svg")],
@@ -3787,6 +3789,7 @@ var data = new Map([
   [Button, function () { return ({ text: 'Click Me!', classes: [], href: 'http://example.com' }); }],
   [Quote, 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'],
   [Grid, function () { return ({mobile: '', tablet: '', desktop: '', widescreen: ''}); }],
+  [FiltersGroup, function () { return ({'from': 'yesterday', 'until': 'today', 'filters': []}); }],
   [Number, 100],
   [String, 'This is pretty neat']
 ]);
