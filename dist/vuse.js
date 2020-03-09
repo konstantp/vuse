@@ -5516,7 +5516,10 @@
       this.generateGroups();
     },
     mounted: function mounted () {
+      var this$1 = this;
+
       this.$builder.rootEl = this.$refs.artboard;
+      this.$on('removeSection', function (section) { return this$1.$builder.remove({ id: section.props.id }); });
       var groups = this.$refs.menu.querySelectorAll('.menu-body');
       var _self = this;
       groups.forEach(function (group) {
@@ -5557,6 +5560,7 @@
     },
 
     beforeDestroy: function beforeDestroy () {
+      this.$off('removeSection');
       this.$builder.clear();
     },
     methods: {
@@ -8868,6 +8872,7 @@
    * Creates and adds a new section to the list of sections.
    * @param {*} options
    */
+
   Vuse.prototype.add = function add (options, position) {
     if (position !== undefined) {
       this.sections.splice(position, 0, new Section(options));

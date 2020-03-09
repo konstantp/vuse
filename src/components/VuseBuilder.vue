@@ -128,6 +128,7 @@ export default {
   },
   mounted () {
     this.$builder.rootEl = this.$refs.artboard;
+    this.$on('removeSection', (section) => this.$builder.remove({ id: section.props.id }));
     const groups = this.$refs.menu.querySelectorAll('.menu-body');
     const _self = this;
     groups.forEach((group) => {
@@ -168,6 +169,7 @@ export default {
   },
 
   beforeDestroy () {
+    this.$off('removeSection');
     this.$builder.clear();
   },
   methods: {

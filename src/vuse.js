@@ -47,6 +47,7 @@ class Vuse {
    * Creates and adds a new section to the list of sections.
    * @param {*} options
    */
+
   add (options, position) {
     if (position !== undefined) {
       this.sections.splice(position, 0, new Section(options));
