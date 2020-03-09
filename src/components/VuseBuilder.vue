@@ -10,6 +10,10 @@
         :id='section.id'
       )
 
+      div.page--copy(
+        v-if='!$builder.sections.length'
+      ) There are no email sections yet. To start adding, please click plus icon on the right
+
     .controller
       .controller-intro(v-if="showIntro && !this.$builder.sections.length")
         label(for="projectName") Hello, start your project
