@@ -5645,7 +5645,7 @@ var script = {
         return {
           name: sec,
           group: this$1.$builder.components[sec].options.group,
-          cover: this$1.$builder.components[sec].options.cover,
+          cover: this$1.$host + this$1.$builder.components[sec].options.cover,
           schema: this$1.$builder.components[sec].options.$schema
         }
       });

@@ -260,7 +260,7 @@ export default {
         return {
           name: sec,
           group: this.$builder.components[sec].options.group,
-          cover: this.$builder.components[sec].options.cover,
+          cover: this.$host + this.$builder.components[sec].options.cover,
           schema: this.$builder.components[sec].options.$schema
         }
       });
