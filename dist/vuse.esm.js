@@ -5513,7 +5513,7 @@ var script = {
     var this$1 = this;
 
     this.$builder.rootEl = this.$refs.artboard;
-    this.$on('removeSection', function (section) { return this$1.$builder.remove({ id: section.props.id }); });
+    this.$on('removeSection', function (section) { return this$1.$builder.remove({ id: section[0].props.id }); });
     var groups = this.$refs.menu.querySelectorAll('.menu-body');
     var _self = this;
     groups.forEach(function (group) {
