@@ -5519,7 +5519,9 @@
       var this$1 = this;
 
       this.$builder.rootEl = this.$refs.artboard;
-      this.$on('removeSection', function (section) { return this$1.$builder.remove({ id: section[0].props.id }); });
+      this.$on('removeSection', function (section) {
+        this$1.$builder.remove(section);
+      });
       var groups = this.$refs.menu.querySelectorAll('.menu-body');
       var _self = this;
       groups.forEach(function (group) {

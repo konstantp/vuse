@@ -128,7 +128,9 @@ export default {
   },
   mounted () {
     this.$builder.rootEl = this.$refs.artboard;
-    this.$on('removeSection', (section) => this.$builder.remove({ id: section[0].props.id }));
+    this.$on('removeSection', (section) => {
+      this.$builder.remove(section);
+    });
     const groups = this.$refs.menu.querySelectorAll('.menu-body');
     const _self = this;
     groups.forEach((group) => {
