@@ -35,15 +35,8 @@
 
     ul.styler-list
       li(v-if="currentOption === 'colorer'")
-        ul.colorer
-          li(v-for="color in colors")
-            input(
-              type="radio"
-              :id="`color${color.charAt(0).toUpperCase() + color.slice(1)}`"
-              name="colorer"
-              :value="color"
-              v-model="colorerColor"
-            )
+        ChromePicker(v-model="colorerColor")
+
       li(v-if="currentOption === 'textColor'")
           ul.colorer
             li(v-for="(color, index) in colors")
@@ -91,12 +84,14 @@
 <script>
 import Popper from 'popper.js';
 import VuseIcon from './VuseIcon';
+import Chrome from 'vue-color/src/components/Chrome';
 import { isParentTo } from './../util';
 
 export default {
   name: 'Styler',
   components: {
-    VuseIcon
+    VuseIcon,
+    'chrome-picker': Chrome
   },
   props: {
     el: {
