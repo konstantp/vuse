@@ -13,7 +13,7 @@
       li(v-if="type === 'button'")
         button.styler-button(@click="updateOption('link')")
           VuseIcon(name='link')
-      li(v-if="type === 'header' || type === 'section'")
+      li(v-if="type === 'header' || (type === 'section' && section.isRemovable)")
         button.styler-button(@click="removeSection")
           VuseIcon(name='trash')
       template(v-if="type === 'text'")

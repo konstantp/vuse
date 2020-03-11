@@ -121,7 +121,7 @@ export default {
     title (value) {
       this.$builder.title = value;
       document.title = value;
-    }
+    },
   },
   created () {
     // sets the initial data.
@@ -262,7 +262,8 @@ export default {
           name: sec,
           group: this.$builder.components[sec].options.group,
           cover: this.$host + this.$builder.components[sec].options.cover,
-          schema: this.$builder.components[sec].options.$schema
+          schema: this.$builder.components[sec].options.$schema,
+          isRemovable: ('isRemovable' in sec) ? sec.isRemovable : true
         }
       });
       return sections;
