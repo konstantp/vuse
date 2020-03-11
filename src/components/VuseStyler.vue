@@ -35,7 +35,7 @@
 
     ul.styler-list
       li(v-if="currentOption === 'colorer'")
-        //- ChromePicker(v-model="colorerColor")
+        ChromePicker(v-model="colorerColor")
 
       li(v-if="currentOption === 'textColor'")
           ul.colorer
@@ -84,14 +84,15 @@
 <script>
 import Popper from 'popper.js';
 import VuseIcon from './VuseIcon';
-// var VueColor = require('vue-color');
 import { isParentTo } from './../util';
+var VueColor = require('vue-color');
 
+console.log(VueColor.Chrome)
 export default {
   name: 'Styler',
   components: {
     VuseIcon,
-    // 'chrome-picker': VueColor.Chrome
+    ChromePicker: VueColor.Chrome
   },
   props: {
     el: {
@@ -170,9 +171,13 @@ export default {
       this.section.set(`${this.name}.href`, this.url);
     },
     changeColor () {
-      this.removeClass(`is-${this.oldColorerColor}`);
-      this.oldColorerColor = this.colorerColor;
-      this.addClass(`is-${this.colorerColor}`);
+      console.log('changeColor', this.colorerColor);
+      const rgba = Object.keys(this.colorerColor.rgba).map(key => `${key}: ${this.colorerColor.rgba[key]}`).join(', ');
+      if (this.$props.type === 'section') {
+        this.section.inlineStyles = `background-color: rgba(${rgba})`;
+      } else {
+        this.section.inlineStyles = `color: rgba(${rgba})`;
+      }
     },
     addClass (className) {
       this.section.set(this.name, (value) => {
@@ -210,7 +215,6 @@ export default {
       document.execCommand(command, false, value);
     },
     showStyler (event) {
-      console.log('showStyler', event, this.section, this);
       event.stopPropagation();
       if (this.isVisible) return;
       this.isVisible = true;
@@ -265,7 +269,7 @@ export default {
   margin: 10px 0
   padding: 5px
   background: $dark
-  border-radius: 26px
+  border-radius: 6px
   display: flex
   flex-direction: column
   justify-content: center

@@ -121,7 +121,7 @@ export default {
     title (value) {
       this.$builder.title = value;
       document.title = value;
-    },
+    }
   },
   created () {
     // sets the initial data.
