@@ -208,7 +208,8 @@ class Vuse {
         const sectionData = {
           name: section.name,
           schema: section.schema,
-          data: section.data
+          data: section.data,
+          isRemovable: ('isRemovable' in section) ? !!section.isRemovable : true
         };
         if (!sectionData.schema) {
           sectionData.schema = this.components[sectionData.name].options.$schema
@@ -227,7 +228,8 @@ class Vuse {
       title: this.title,
       sections: this.sections.map(s => ({
         name: s.name,
-        data: s.data
+        data: s.data,
+        isRemovable: ('isRemovable' in s) ? !!s.isRemovable : true
       }))
     };
   }

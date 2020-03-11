@@ -35,7 +35,7 @@
 
     ul.styler-list
       li(v-if="currentOption === 'colorer'")
-        ChromePicker(v-model="colorerColor")
+        //- ChromePicker(v-model="colorerColor")
 
       li(v-if="currentOption === 'textColor'")
           ul.colorer
@@ -84,14 +84,14 @@
 <script>
 import Popper from 'popper.js';
 import VuseIcon from './VuseIcon';
-import Chrome from 'vue-color/src/components/Chrome';
+// var VueColor = require('vue-color');
 import { isParentTo } from './../util';
 
 export default {
   name: 'Styler',
   components: {
     VuseIcon,
-    'chrome-picker': Chrome
+    // 'chrome-picker': VueColor.Chrome
   },
   props: {
     el: {
@@ -210,6 +210,7 @@ export default {
       document.execCommand(command, false, value);
     },
     showStyler (event) {
+      console.log('showStyler', event, this.section, this);
       event.stopPropagation();
       if (this.isVisible) return;
       this.isVisible = true;

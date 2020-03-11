@@ -4,12 +4,10 @@
     * @license MIT
     */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue-color/src/components/Chrome')) :
-  typeof define === 'function' && define.amd ? define(['vue-color/src/components/Chrome'], factory) :
-  (global.vuse = factory(global.Chrome));
-}(this, (function (Chrome) { 'use strict';
-
-  Chrome = Chrome && Chrome.hasOwnProperty('default') ? Chrome['default'] : Chrome;
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.vuse = factory());
+}(this, (function () { 'use strict';
 
   /**
    * Removes all key-value entries from the list cache.
@@ -3835,6 +3833,7 @@
     options = Object.assign({}, SECTION_OPTIONS, options);
     this.name = options.name;
     this.schema = options.schema;
+    this.isRemovable = ('isRemovable' in options) ? !!options.isRemovable : true;
     this.data = options.data || Seeder.seed(options.schema);
     this.stylers = [];
   };
@@ -5651,12 +5650,13 @@
 
         // get sections data
         sections = Object.keys(this.$builder.components).map(function (sec) {
+          console.log('get Sections', sec, this$1.$builder.components[sec].options);
           return {
             name: sec,
             group: this$1.$builder.components[sec].options.group,
             cover: this$1.$host + this$1.$builder.components[sec].options.cover,
             schema: this$1.$builder.components[sec].options.$schema,
-            isRemovable: ('isRemovable' in sec) ? sec.isRemovable : true
+            isRemovable: ('isRemovable' in this$1.$builder.components[sec].options) ? !!this$1.$builder.components[sec].options.isRemovable : true
           }
         });
         return sections;
@@ -8471,7 +8471,7 @@
     name: 'Styler',
     components: {
       VuseIcon: VuseIcon,
-      'chrome-picker': Chrome
+      // 'chrome-picker': VueColor.Chrome
     },
     props: {
       el: {
@@ -8598,6 +8598,7 @@
         document.execCommand(command, false, value);
       },
       showStyler: function showStyler (event) {
+        console.log('showStyler', event, this.section, this);
         event.stopPropagation();
         if (this.isVisible) { return; }
         this.isVisible = true;
@@ -8642,7 +8643,7 @@
   /* script */
               var __vue_script__$2 = script$2;
   /* template */
-  var __vue_render__$2 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.$builder.isEditing)?_c('div',{ref:"styler",staticClass:"styler",class:{ 'is-visible': _vm.isVisible },attrs:{"id":"styler"},on:{"click":function($event){$event.stopPropagation();}}},[_c('ul',{staticClass:"styler-list"},[(_vm.type === 'button' || _vm.type === 'section')?_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('colorer');}}},[_c('VuseIcon',{attrs:{"name":"palettes"}})],1)]):_vm._e(),(_vm.type === 'button')?_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('link');}}},[_c('VuseIcon',{attrs:{"name":"link"}})],1)]):_vm._e(),(_vm.type === 'header' || (_vm.type === 'section' && _vm.section.isRemovable))?_c('li',[_c('button',{staticClass:"styler-button",on:{"click":_vm.removeSection}},[_c('VuseIcon',{attrs:{"name":"trash"}})],1)]):_vm._e(),(_vm.type === 'text')?[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('textColor');}}},[_c('VuseIcon',{attrs:{"name":"palettes"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('align');}}},[_c('VuseIcon',{attrs:{"name":"align"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('textStyle');}}},[_c('VuseIcon',{attrs:{"name":"textStyle"}})],1)])]:_vm._e(),(_vm.type === 'grid')?[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.selectDevice('mobile');}}},[_c('VuseIcon',{attrs:{"name":"mobile"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.selectDevice('desktop');}}},[_c('VuseIcon',{attrs:{"name":"laptop"}})],1)])]:_vm._e()],2),_c('ul',{staticClass:"styler-list"},[(_vm.currentOption === 'colorer')?_c('li',[_c('ChromePicker',{model:{value:(_vm.colorerColor),callback:function ($$v) {_vm.colorerColor=$$v;},expression:"colorerColor"}})],1):_vm._e(),(_vm.currentOption === 'textColor')?_c('li',[_c('ul',{staticClass:"colorer"},_vm._l((_vm.colors),function(color,index){return _c('li',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.textColor),expression:"textColor"}],attrs:{"type":"radio","id":("color" + (color.charAt(0).toUpperCase() + color.slice(1))),"name":"colorer"},domProps:{"value":_vm.textColors[index],"checked":_vm._q(_vm.textColor,_vm.textColors[index])},on:{"change":function($event){_vm.textColor=_vm.textColors[index];}}})])}))]):_vm._e(),(_vm.currentOption === 'link')?_c('li',[_c('div',{staticClass:"input-group is-rounded has-itemAfter is-primary"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],staticClass:"input",attrs:{"type":"text","placeholder":"type your link"},domProps:{"value":(_vm.url)},on:{"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value;}}}),_c('button',{staticClass:"button",on:{"click":_vm.addLink}},[_c('VuseIcon',{attrs:{"name":"link"}})],1)])]):_vm._e(),(_vm.currentOption === 'align')?_c('li',[_c('ul',{staticClass:"align"},[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('justifyleft');}}},[_c('VuseIcon',{attrs:{"name":"left"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('justifycenter');}}},[_c('VuseIcon',{attrs:{"name":"center"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('justifyright');}}},[_c('VuseIcon',{attrs:{"name":"right"}})],1)])])]):_vm._e(),(_vm.currentOption === 'textStyle')?_c('li',[_c('ul',{staticClass:"align"},[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('bold');}}},[_c('VuseIcon',{attrs:{"name":"bold"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('italic');}}},[_c('VuseIcon',{attrs:{"name":"italic"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('underline');}}},[_c('VuseIcon',{attrs:{"name":"underline"}})],1)])])]):_vm._e(),(_vm.currentOption === 'columnWidth')?_c('li',[_c('ul',{staticClass:"align"},[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.gridValue--;}}},[_c('VuseIcon',{attrs:{"name":"arrowLeft"}})],1)]),_c('li',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.gridValue),expression:"gridValue"}],staticClass:"styler-input",attrs:{"type":"number","min":"0","max":"12"},domProps:{"value":(_vm.gridValue)},on:{"input":function($event){if($event.target.composing){ return; }_vm.gridValue=$event.target.value;}}})]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.gridValue++;}}},[_c('VuseIcon',{attrs:{"name":"arrowRight"}})],1)])])]):_vm._e()])]):_vm._e()};
+  var __vue_render__$2 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.$builder.isEditing)?_c('div',{ref:"styler",staticClass:"styler",class:{ 'is-visible': _vm.isVisible },attrs:{"id":"styler"},on:{"click":function($event){$event.stopPropagation();}}},[_c('ul',{staticClass:"styler-list"},[(_vm.type === 'button' || _vm.type === 'section')?_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('colorer');}}},[_c('VuseIcon',{attrs:{"name":"palettes"}})],1)]):_vm._e(),(_vm.type === 'button')?_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('link');}}},[_c('VuseIcon',{attrs:{"name":"link"}})],1)]):_vm._e(),(_vm.type === 'header' || (_vm.type === 'section' && _vm.section.isRemovable))?_c('li',[_c('button',{staticClass:"styler-button",on:{"click":_vm.removeSection}},[_c('VuseIcon',{attrs:{"name":"trash"}})],1)]):_vm._e(),(_vm.type === 'text')?[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('textColor');}}},[_c('VuseIcon',{attrs:{"name":"palettes"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('align');}}},[_c('VuseIcon',{attrs:{"name":"align"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.updateOption('textStyle');}}},[_c('VuseIcon',{attrs:{"name":"textStyle"}})],1)])]:_vm._e(),(_vm.type === 'grid')?[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.selectDevice('mobile');}}},[_c('VuseIcon',{attrs:{"name":"mobile"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.selectDevice('desktop');}}},[_c('VuseIcon',{attrs:{"name":"laptop"}})],1)])]:_vm._e()],2),_c('ul',{staticClass:"styler-list"},[(_vm.currentOption === 'colorer')?_c('li'):_vm._e(),(_vm.currentOption === 'textColor')?_c('li',[_c('ul',{staticClass:"colorer"},_vm._l((_vm.colors),function(color,index){return _c('li',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.textColor),expression:"textColor"}],attrs:{"type":"radio","id":("color" + (color.charAt(0).toUpperCase() + color.slice(1))),"name":"colorer"},domProps:{"value":_vm.textColors[index],"checked":_vm._q(_vm.textColor,_vm.textColors[index])},on:{"change":function($event){_vm.textColor=_vm.textColors[index];}}})])}))]):_vm._e(),(_vm.currentOption === 'link')?_c('li',[_c('div',{staticClass:"input-group is-rounded has-itemAfter is-primary"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],staticClass:"input",attrs:{"type":"text","placeholder":"type your link"},domProps:{"value":(_vm.url)},on:{"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value;}}}),_c('button',{staticClass:"button",on:{"click":_vm.addLink}},[_c('VuseIcon',{attrs:{"name":"link"}})],1)])]):_vm._e(),(_vm.currentOption === 'align')?_c('li',[_c('ul',{staticClass:"align"},[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('justifyleft');}}},[_c('VuseIcon',{attrs:{"name":"left"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('justifycenter');}}},[_c('VuseIcon',{attrs:{"name":"center"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('justifyright');}}},[_c('VuseIcon',{attrs:{"name":"right"}})],1)])])]):_vm._e(),(_vm.currentOption === 'textStyle')?_c('li',[_c('ul',{staticClass:"align"},[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('bold');}}},[_c('VuseIcon',{attrs:{"name":"bold"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('italic');}}},[_c('VuseIcon',{attrs:{"name":"italic"}})],1)]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.execute('underline');}}},[_c('VuseIcon',{attrs:{"name":"underline"}})],1)])])]):_vm._e(),(_vm.currentOption === 'columnWidth')?_c('li',[_c('ul',{staticClass:"align"},[_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.gridValue--;}}},[_c('VuseIcon',{attrs:{"name":"arrowLeft"}})],1)]),_c('li',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.gridValue),expression:"gridValue"}],staticClass:"styler-input",attrs:{"type":"number","min":"0","max":"12"},domProps:{"value":(_vm.gridValue)},on:{"input":function($event){if($event.target.composing){ return; }_vm.gridValue=$event.target.value;}}})]),_c('li',[_c('button',{staticClass:"styler-button",on:{"click":function($event){_vm.gridValue++;}}},[_c('VuseIcon',{attrs:{"name":"arrowRight"}})],1)])])]):_vm._e()])]):_vm._e()};
   var __vue_staticRenderFns__$2 = [];
 
     /* style */
@@ -9048,7 +9049,8 @@
         var sectionData = {
           name: section.name,
           schema: section.schema,
-          data: section.data
+          data: section.data,
+          isRemovable: ('isRemovable' in section) ? !!section.isRemovable : true
         };
         if (!sectionData.schema) {
           sectionData.schema = this$1.components[sectionData.name].options.$schema;
@@ -9067,7 +9069,8 @@
       title: this.title,
       sections: this.sections.map(function (s) { return ({
         name: s.name,
-        data: s.data
+        data: s.data,
+        isRemovable: ('isRemovable' in s) ? !!s.isRemovable : true
       }); })
     };
   };

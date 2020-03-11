@@ -15,6 +15,7 @@ export default class Section {
     options = Object.assign({}, SECTION_OPTIONS, options);
     this.name = options.name;
     this.schema = options.schema;
+    this.isRemovable = ('isRemovable' in options) ? !!options.isRemovable : true;
     this.data = options.data || Seeder.seed(options.schema);
     this.stylers = [];
   }

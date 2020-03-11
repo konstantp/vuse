@@ -263,7 +263,7 @@ export default {
           group: this.$builder.components[sec].options.group,
           cover: this.$host + this.$builder.components[sec].options.cover,
           schema: this.$builder.components[sec].options.$schema,
-          isRemovable: ('isRemovable' in sec) ? sec.isRemovable : true
+          isRemovable: ('isRemovable' in this.$builder.components[sec].options) ? !!this.$builder.components[sec].options.isRemovable : true
         }
       });
       return sections;
