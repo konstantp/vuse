@@ -2091,20 +2091,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
 
 var VueColor = __webpack_require__(/*! vue-color */ "./node_modules/vue-color/dist/vue-color.min.js");
 
-console.log(VueColor.Chrome);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Styler',
   components: {
@@ -2148,7 +2140,7 @@ console.log(VueColor.Chrome);
       this.changeColor();
     },
     textColor: function textColor() {
-      this.execute('forecolor', this.textColor);
+      this.execute('forecolor', this.getRGBA(this.textColor));
     },
     gridValue: function gridValue() {
       var _this = this;
@@ -2193,13 +2185,13 @@ console.log(VueColor.Chrome);
     addLink: function addLink() {
       this.section.set("".concat(this.name, ".href"), this.url);
     },
-    changeColor: function changeColor() {
-      var _this3 = this;
-
-      console.log('changeColor', this.colorerColor);
-      var rgba = Object.keys(this.colorerColor.rgba).map(function (key) {
-        return "".concat(key, ": ").concat(_this3.colorerColor.rgba[key]);
+    getRGBA: function getRGBA(colorObj) {
+      return Object.keys(colorObj.rgba).map(function (key) {
+        return "".concat(key, ": ").concat(colorObj.rgba[key]);
       }).join(', ');
+    },
+    changeColor: function changeColor() {
+      var rgba = this.getRGBA(this.colorerColor);
 
       if (this.$props.type === 'section') {
         this.section.inlineStyles = "background-color: rgba(".concat(rgba, ")");
@@ -2223,11 +2215,11 @@ console.log(VueColor.Chrome);
       this.gridValue = gridValue;
     },
     removeClass: function removeClass(className) {
-      var _this4 = this;
+      var _this3 = this;
 
       if (Array.isArray(className)) {
         return className.forEach(function (c) {
-          _this4.removeClass(c);
+          _this3.removeClass(c);
         });
       }
 
@@ -33019,45 +33011,21 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _vm.currentOption === "textColor"
-              ? _c("li", [
-                  _c(
-                    "ul",
-                    { staticClass: "colorer" },
-                    _vm._l(_vm.colors, function(color, index) {
-                      return _c("li", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.textColor,
-                              expression: "textColor"
-                            }
-                          ],
-                          attrs: {
-                            type: "radio",
-                            id:
-                              "color" +
-                              (color.charAt(0).toUpperCase() + color.slice(1)),
-                            name: "colorer"
-                          },
-                          domProps: {
-                            value: _vm.textColors[index],
-                            checked: _vm._q(
-                              _vm.textColor,
-                              _vm.textColors[index]
-                            )
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.textColor = _vm.textColors[index]
-                            }
-                          }
-                        })
-                      ])
+              ? _c(
+                  "li",
+                  [
+                    _c("ChromePicker", {
+                      model: {
+                        value: _vm.textColor,
+                        callback: function($$v) {
+                          _vm.textColor = $$v
+                        },
+                        expression: "textColor"
+                      }
                     })
-                  )
-                ])
+                  ],
+                  1
+                )
               : _vm._e(),
             _vm._v(" "),
             _vm.currentOption === "link"

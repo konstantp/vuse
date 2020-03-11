@@ -38,15 +38,8 @@
         ChromePicker(v-model="colorerColor")
 
       li(v-if="currentOption === 'textColor'")
-          ul.colorer
-            li(v-for="(color, index) in colors")
-              input(
-                type="radio"
-                :id="`color${color.charAt(0).toUpperCase() + color.slice(1)}`"
-                name="colorer"
-                :value="textColors[index]"
-                v-model="textColor"
-                )
+          ChromePicker(v-model="textColor")
+
       li(v-if="currentOption === 'link'")
         .input-group.is-rounded.has-itemAfter.is-primary
           input.input(type="text" placeholder="type your link" v-model="url")
@@ -87,7 +80,6 @@ import VuseIcon from './VuseIcon';
 import { isParentTo } from './../util';
 var VueColor = require('vue-color');
 
-console.log(VueColor.Chrome)
 export default {
   name: 'Styler',
   components: {
@@ -129,7 +121,7 @@ export default {
       this.changeColor();
     },
     textColor: function () {
-      this.execute('forecolor', this.textColor)
+      this.execute('forecolor', this.getRGBA(this.textColor));
     },
     gridValue: function () {
       this.gridValue = Math.min(Math.max(this.gridValue, 0), 12);
@@ -170,9 +162,11 @@ export default {
     addLink () {
       this.section.set(`${this.name}.href`, this.url);
     },
+    getRGBA (colorObj) {
+      return Object.keys(colorObj.rgba).map(key => `${key}: ${colorObj.rgba[key]}`).join(', ');
+    },
     changeColor () {
-      console.log('changeColor', this.colorerColor);
-      const rgba = Object.keys(this.colorerColor.rgba).map(key => `${key}: ${this.colorerColor.rgba[key]}`).join(', ');
+      const rgba = this.getRGBA(this.colorerColor);
       if (this.$props.type === 'section') {
         this.section.inlineStyles = `background-color: rgba(${rgba})`;
       } else {
