@@ -38,7 +38,7 @@
         ChromePicker(v-model="colorerColor")
 
       li(v-if="currentOption === 'textColor'")
-          ChromePicker(v-model="textColor")
+        ChromePicker(v-model="textColor")
 
       li(v-if="currentOption === 'link'")
         .input-group.is-rounded.has-itemAfter.is-primary
@@ -105,11 +105,9 @@ export default {
     }
   },
   data: () => ({
-    colors: ['blue', 'green', 'red', 'black', 'white'],
-    textColors: ['#4da1ff', '#38E4B7', '#EA4F52', '#000000', '#FFFFFF'],
     textColor: '',
-    oldColorerColor: '',
     colorerColor: '',
+    oldColorerColor: '',
     mouseTarget: '',
     currentOption: '',
     url: '',
@@ -117,11 +115,13 @@ export default {
     isVisible: false
   }),
   watch: {
-    colorerColor: function () {
-      this.changeColor();
+    colorerColor: function (newVal) {
+      console.log('colorerColor watcher', newVal);
+      this.changeColor(newVal);
     },
-    textColor: function () {
-      this.execute('forecolor', this.getRGBA(this.textColor));
+    textColor: function (newVal) {
+      console.log('textColor watcher', newVal);
+      this.execute('forecolor', this.getRGBA(newVal));
     },
     gridValue: function () {
       this.gridValue = Math.min(Math.max(this.gridValue, 0), 12);
@@ -163,15 +163,13 @@ export default {
       this.section.set(`${this.name}.href`, this.url);
     },
     getRGBA (colorObj) {
-      return Object.keys(colorObj.rgba).map(key => `${key}: ${colorObj.rgba[key]}`).join(', ');
+      return `rgba(${Object.values(colorObj.rgba).join(', ')})`;
     },
-    changeColor () {
-      const rgba = this.getRGBA(this.colorerColor);
-      if (this.$props.type === 'section') {
-        this.section.inlineStyles = `background-color: rgba(${rgba})`;
-      } else {
-        this.section.inlineStyles = `color: rgba(${rgba})`;
-      }
+    changeColor (colorObj) {
+      const rgba = this.getRGBA(colorObj);
+      console.log('changeColor this.$props.type', this.$props.type);
+      this.section.inlineStyles = `background-color: ${rgba}`;
+      this.section.data.inlineStyles = `background-color: ${rgba}`;
     },
     addClass (className) {
       this.section.set(this.name, (value) => {
@@ -206,6 +204,7 @@ export default {
     },
     execute (command, value = null) {
       this.el.focus();
+      console.log('execute', command, value);
       document.execCommand(command, false, value);
     },
     showStyler (event) {

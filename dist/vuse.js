@@ -8492,11 +8492,9 @@
       }
     },
     data: function () { return ({
-      colors: ['blue', 'green', 'red', 'black', 'white'],
-      textColors: ['#4da1ff', '#38E4B7', '#EA4F52', '#000000', '#FFFFFF'],
       textColor: '',
-      oldColorerColor: '',
       colorerColor: '',
+      oldColorerColor: '',
       mouseTarget: '',
       currentOption: '',
       url: '',
@@ -8504,11 +8502,13 @@
       isVisible: false
     }); },
     watch: {
-      colorerColor: function () {
-        this.changeColor();
+      colorerColor: function (newVal) {
+        console.log('colorerColor watcher', newVal);
+        this.changeColor(newVal);
       },
-      textColor: function () {
-        this.execute('forecolor', this.getRGBA(this.textColor));
+      textColor: function (newVal) {
+        console.log('textColor watcher', newVal);
+        this.execute('forecolor', this.getRGBA(newVal));
       },
       gridValue: function () {
         var this$1 = this;
@@ -8554,15 +8554,13 @@
         this.section.set(((this.name) + ".href"), this.url);
       },
       getRGBA: function getRGBA (colorObj) {
-        return Object.keys(colorObj.rgba).map(function (key) { return (key + ": " + (colorObj.rgba[key])); }).join(', ');
+        return ("rgba(" + (Object.values(colorObj.rgba).join(', ')) + ")");
       },
-      changeColor: function changeColor () {
-        var rgba = this.getRGBA(this.colorerColor);
-        if (this.$props.type === 'section') {
-          this.section.inlineStyles = "background-color: rgba(" + rgba + ")";
-        } else {
-          this.section.inlineStyles = "color: rgba(" + rgba + ")";
-        }
+      changeColor: function changeColor (colorObj) {
+        var rgba = this.getRGBA(colorObj);
+        console.log('changeColor this.$props.type', this.$props.type);
+        this.section.inlineStyles = "background-color: " + rgba;
+        this.section.data.inlineStyles = "background-color: " + rgba;
       },
       addClass: function addClass (className) {
         this.section.set(this.name, function (value) {
@@ -8601,6 +8599,7 @@
         if ( value === void 0 ) value = null;
 
         this.el.focus();
+        console.log('execute', command, value);
         document.execCommand(command, false, value);
       },
       showStyler: function showStyler (event) {
