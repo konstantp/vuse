@@ -7,7 +7,7 @@
     @click.stop=""
   )
     ul.styler-list
-      li(v-if="type === 'button' || type === 'section'")
+      //- li(v-if="type === 'button' || type === 'section'")
         button.styler-button(@click="updateOption('colorer')")
           VuseIcon(name='palettes')
       li(v-if="type === 'button'")
@@ -17,7 +17,7 @@
         button.styler-button(@click="removeSection")
           VuseIcon(name='trash')
       template(v-if="type === 'text'")
-        li: button.styler-button(@click="updateOption('textColor')")
+        //- li: button.styler-button(@click="updateOption('textColor')")
             VuseIcon(name='palettes')
         li: button.styler-button(@click="updateOption('align')")
             VuseIcon(name='align')
@@ -116,11 +116,9 @@ export default {
   }),
   watch: {
     colorerColor: function (newVal) {
-      console.log('colorerColor watcher', newVal);
       this.changeColor(newVal);
     },
     textColor: function (newVal) {
-      console.log('textColor watcher', newVal);
       this.execute('forecolor', this.getRGBA(newVal));
     },
     gridValue: function () {
@@ -167,7 +165,6 @@ export default {
     },
     changeColor (colorObj) {
       const rgba = this.getRGBA(colorObj);
-      console.log('changeColor this.$props.type', this.$props.type);
       this.section.inlineStyles = `background-color: ${rgba}`;
       this.section.data.inlineStyles = `background-color: ${rgba}`;
     },
@@ -204,7 +201,7 @@ export default {
     },
     execute (command, value = null) {
       this.el.focus();
-      console.log('execute', command, value);
+      // console.log('execute', command, value);
       document.execCommand(command, false, value);
     },
     showStyler (event) {
