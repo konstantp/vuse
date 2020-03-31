@@ -104,6 +104,10 @@ export default {
         title: '',
         sections: []
       })
+    },
+    supportGroups: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -241,6 +245,11 @@ export default {
       // group sections together
       this.sections.forEach((section) => {
         let sectionGroup = section.group;
+
+        if (this.supportGroups.length && !this.supportGroups.includes(sectionGroup)) {
+          return;
+        }
+
         if (!sectionGroup) {
           groups.random.push(section);
           return;

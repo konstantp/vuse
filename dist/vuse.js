@@ -5490,6 +5490,10 @@
           title: '',
           sections: []
         }); }
+      },
+      supportGroups: {
+        type: Array,
+        default: function () { return []; }
       }
     },
     data: function data () {
@@ -5626,11 +5630,18 @@
         this.$emit('saved', this.$builder);
       },
       generateGroups: function generateGroups () {
+        var this$1 = this;
+
         var groups = { random: [] };
 
         // group sections together
         this.sections.forEach(function (section) {
           var sectionGroup = section.group;
+
+          if (this$1.supportGroups.length && !this$1.supportGroups.includes(sectionGroup)) {
+            return;
+          }
+
           if (!sectionGroup) {
             groups.random.push(section);
             return;
