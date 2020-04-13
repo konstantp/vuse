@@ -39,7 +39,7 @@
 
         button.btn.m-mini.m-danger(
           v-if="!tempSections && actions.includes('clear')"
-          v-text="'Clear all sections'"
+          v-text="'Clear all'"
           @click="clearSections"
         )
 
@@ -51,8 +51,7 @@
 
         button.btn.m-mini(
           v-if="actions.includes('reorder')"
-          :class="{ 'is-red': $builder.isSorting }"
-          v-text="'Reorder'"
+          v-text="$builder.isSorting ? 'Disable Reorder Mode' : 'Enable Reorder Mode'"
           @click="toggleSort"
         )
 
@@ -306,7 +305,12 @@ export default {
     position: fixed
     z-index: 200
     bottom: 30px
-    right: 40px
+    right: 0
+    width: 250px
+    display: flex
+    justify-content: center
+    .btn
+       margin: 0 4px
   &-input
     outline: none
     border: 1px solid $gray
