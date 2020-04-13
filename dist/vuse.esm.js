@@ -5488,6 +5488,10 @@ var script = {
     supportGroups: {
       type: Array,
       default: function () { return []; }
+    },
+    alwaysShowMenu: {
+      type: Boolean,
+      default: false
     }
   },
   data: function data () {
@@ -5553,6 +5557,8 @@ var script = {
         _self.$builder.sort(evt.oldIndex, evt.newIndex);
       }
     });
+
+    this.$set(this, 'listShown', this.alwaysShowMenu);
   },
 
   updated: function updated () {

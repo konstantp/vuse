@@ -108,6 +108,10 @@ export default {
     supportGroups: {
       type: Array,
       default: () => []
+    },
+    alwaysShowMenu: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -171,6 +175,8 @@ export default {
         _self.$builder.sort(evt.oldIndex, evt.newIndex);
       }
     });
+
+    this.$set(this, 'listShown', this.alwaysShowMenu);
   },
 
   updated () {
