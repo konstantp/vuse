@@ -106,6 +106,10 @@ export default {
       type: Array,
       default: () => []
     },
+    alwaysShowMenu: {
+      type: Boolean,
+      default: false
+    },
     actions: {
       type: Array,
       default: () => ['save', 'reorder', 'undo', 'clear', 'toggle-menu']

@@ -5495,6 +5495,10 @@
         type: Array,
         default: function () { return []; }
       },
+      alwaysShowMenu: {
+        type: Boolean,
+        default: false,
+      },
       actions: {
         type: Array,
         default: function () { return ['save', 'reorder', 'undo', 'clear', 'toggle-menu']; }
