@@ -5536,7 +5536,11 @@
       this.$parent.$on('saveVuseTemplate', this.submit);
 
       this.$on('removeSection', function (section) {
-        this$1.$builder.remove(section);
+        var sectionObj = this$1.$builder.sections.find(function (sec) { return sec.id === section.id; });
+        console.log('removeSection in builder', section, this$1.$builder, sectionObj);
+        if (sectionObj) {
+          this$1.$builder.remove(sectionObj);
+        }
       });
       var groups = this.$refs.menu.querySelectorAll('.menu-body');
       var _self = this;
@@ -8614,6 +8618,7 @@
         });
       },
       removeSection: function removeSection () {
+        console.log('removeSection in Styler', this.section);
         this.$builder.remove(this.section);
       },
       execute: function execute (command, value) {

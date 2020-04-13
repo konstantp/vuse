@@ -11,7 +11,9 @@
 }
 .controller{box-sizing:border-box
 }
-.controller-panel{position:fixed;z-index:200;bottom:30px;right:40px
+.controller-panel{position:fixed;z-index:200;bottom:30px;right:0;width:250px;display:flex;justify-content:center
+}
+.controller-panel .btn{margin:0 4px
 }
 .controller-input{outline:0;border:1px solid #c1c1c1;padding:.5em 1em;margin:20px 0;border-radius:40px;width:100%;font-size:16px
 }

@@ -144,7 +144,10 @@ export default {
     this.$parent.$on('saveVuseTemplate', this.submit);
 
     this.$on('removeSection', (section) => {
-      this.$builder.remove(section);
+      const sectionObj = this.$builder.sections.find(sec => sec.id === section.id)
+      if (sectionObj) {
+        this.$builder.remove(sectionObj);
+      }
     });
     const groups = this.$refs.menu.querySelectorAll('.menu-body');
     const _self = this;
