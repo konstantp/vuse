@@ -31,41 +31,38 @@
               | {{ theme.name }}
 
       .controller-panel
-        button.controller-button.is-green(
-          tooltip-position="top"
-          tooltip="export"
+        button.btn.m-mini.m-expected-action(
+          v-if="actions.includes('save')"
+          v-text="'Save'"
           @click="submit"
         )
-          VuseIcon(name='download')
-        button.controller-button.is-red(
-          v-if="!tempSections"
-          tooltip-position="top"
-          tooltip="clear sections"
+
+        button.btn.m-mini.m-danger(
+          v-if="!tempSections && actions.includes('clear')"
+          v-text="'Clear all sections'"
           @click="clearSections"
         )
-          VuseIcon(name='trash')
-        button.controller-button.is-gray(
-          v-if="tempSections"
-          tooltip-position="top"
-          tooltip="undo"
+
+        button.btn.m-mini(
+          v-if="tempSections && actions.includes('undo')"
+          v-text="'Undo'"
           @click="undo"
         )
-          VuseIcon(name='undo')
-        button.controller-button.is-blue(
-          tooltip-position="top"
-          tooltip="sorting"
+
+        button.btn.m-mini(
+          v-if="actions.includes('reorder')"
           :class="{ 'is-red': $builder.isSorting }"
+          v-text="'Reorder'"
           @click="toggleSort"
         )
-          VuseIcon(name='sort')
-        button.controller-button.is-blue(
-          tooltip-position="top"
-          tooltip="add section"
+
+        button.btn.m-mini(
+          v-if="actions.includes('toggle-menu')"
           :class="{ 'is-red': listShown, 'is-rotated': listShown }"
           :disabled="!$builder.isEditing"
+          v-text="listShown ? 'Close Menu' : 'Open menu'"
           @click="newSection"
         )
-          VuseIcon(name='plus')
 
     ul.menu(:class="{ 'is-visiable': listShown }" ref="menu")
       li.menu-group(v-for="(group, name) in groups"  v-if="group.length")
@@ -109,9 +106,9 @@ export default {
       type: Array,
       default: () => []
     },
-    alwaysShowMenu: {
-      type: Boolean,
-      default: false
+    actions: {
+      type: Array,
+      default: () => ['save', 'reorder', 'undo', 'clear', 'toggle-menu']
     }
   },
   data () {
@@ -141,6 +138,8 @@ export default {
   },
   mounted () {
     this.$builder.rootEl = this.$refs.artboard;
+    this.$parent.$on('saveVuseTemplate', this.submit);
+
     this.$on('removeSection', (section) => {
       this.$builder.remove(section);
     });
@@ -186,6 +185,7 @@ export default {
   },
 
   beforeDestroy () {
+    this.$parent.$off('saveVuseTemplate');
     this.$off('removeSection');
     this.$builder.clear();
   },
