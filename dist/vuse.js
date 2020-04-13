@@ -5535,13 +5535,21 @@
       this.$builder.rootEl = this.$refs.artboard;
       this.$parent.$on('saveVuseTemplate', this.submit);
 
-      this.$on('removeSection', function (section) {
+      this.$on('vuseRemoveSection', function (section) {
         var sectionObj = this$1.$builder.sections.find(function (sec) { return sec.id === section.id; });
-        console.log('removeSection in builder', section, this$1.$builder, sectionObj);
         if (sectionObj) {
           this$1.$builder.remove(sectionObj);
         }
       });
+
+      this.$parent.$on('vuseClearAll', this.clearSections);
+
+      this.$on('vuseDisableReorderMode', function () {
+        if (this$1.$builder.isSorting) {
+          this$1.toggleSort();
+        }
+      });
+
       var groups = this.$refs.menu.querySelectorAll('.menu-body');
       var _self = this;
       groups.forEach(function (group) {
@@ -5566,10 +5574,12 @@
         disabled: true,
         preventOnFilter: false,
         onAdd: function onAdd (evt) {
+          console.log('sort onAdd', evt);
           _self.addSection(_self.currentSection, evt.newIndex);
           evt.item.remove();
         },
         onUpdate: function onUpdate (evt) {
+          console.log('sort onUdpate', evt);
           _self.$builder.sort(evt.oldIndex, evt.newIndex);
         }
       });
@@ -5585,7 +5595,9 @@
 
     beforeDestroy: function beforeDestroy () {
       this.$parent.$off('saveVuseTemplate');
-      this.$off('removeSection');
+      this.$off('vuseRemoveSection');
+      this.$off('vuseDisableReorderMode');
+      this.$parent.$off('vuseClearAll');
       this.$builder.clear();
     },
     methods: {
@@ -5603,6 +5615,9 @@
       clearSections: function clearSections () {
         var this$1 = this;
 
+        if (this.$builder.isSorting) {
+          this.toggleSort();
+        }
         this.tempSections = this.$builder.clear();
         setTimeout(function () {
           this$1.tempSections = null;
@@ -5615,7 +5630,16 @@
       addTheme: function addTheme (theme) {
         this.$builder.set(theme);
       },
+      onDrag: function onDrag(section) {
+        // console.log('onDrag this.$builder.isSorting', this.$builder, this.$builder.isSorting);
+        if (!this.$builder.isSorting) {
+          this.toggleSort();
+        }
+        this.currentSection = section;
+      },
+
       toggleSort: function toggleSort () {
+        // console.log('toggleSort', this.$builder.isSorting);
         this.$builder.isSorting = !this.$builder.isSorting;
         this.$builder.isEditing = !this.$builder.isSorting;
         if (!this.$builder.isSorting && this.sortable) {
@@ -5694,7 +5718,7 @@
   /* script */
               var __vue_script__ = script;
   /* template */
-  var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{ref:"artboard",staticClass:"artboard",class:{ 'is-sorting': _vm.$builder.isSorting, 'is-editable': _vm.$builder.isEditing },attrs:{"id":"artboard"}},[_vm._l((_vm.$builder.sections),function(section){return _c(section.name,{key:section.id,tag:"component",attrs:{"id":section.id}})}),(!_vm.$builder.sections.length)?_c('div',{staticClass:"page--copy"},[_vm._v("There are no email sections yet. To start adding, please click plus icon on the right")]):_vm._e()],2),_c('div',{staticClass:"controller"},[(_vm.showIntro && !this.$builder.sections.length)?_c('div',{staticClass:"controller-intro"},[_c('label',{attrs:{"for":"projectName"}},[_vm._v("Hello, start your project")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.title),expression:"title"}],staticClass:"controller-input",attrs:{"id":"projectName","placeholder":"project name"},domProps:{"value":(_vm.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.title=$event.target.value;}}}),(_vm.themes)?[_c('div',{staticClass:"controller-themes"},_vm._l((_vm.themes),function(theme){return _c('button',{staticClass:"controller-theme",on:{"click":function($event){_vm.addTheme(theme);}}},[_vm._v(_vm._s(theme.name))])}))]:_vm._e()],2):_vm._e(),_c('div',{staticClass:"controller-panel"},[(_vm.actions.includes('save'))?_c('button',{staticClass:"btn m-mini m-expected-action",domProps:{"textContent":_vm._s('Save')},on:{"click":_vm.submit}}):_vm._e(),(!_vm.tempSections && _vm.actions.includes('clear'))?_c('button',{staticClass:"btn m-mini m-danger",domProps:{"textContent":_vm._s('Clear all')},on:{"click":_vm.clearSections}}):_vm._e(),(_vm.tempSections && _vm.actions.includes('undo'))?_c('button',{staticClass:"btn m-mini",domProps:{"textContent":_vm._s('Undo')},on:{"click":_vm.undo}}):_vm._e(),(_vm.actions.includes('reorder'))?_c('button',{staticClass:"btn m-mini",domProps:{"textContent":_vm._s(_vm.$builder.isSorting ? 'Disable Reorder Mode' : 'Enable Reorder Mode')},on:{"click":_vm.toggleSort}}):_vm._e(),(_vm.actions.includes('toggle-menu'))?_c('button',{staticClass:"btn m-mini",class:{ 'is-red': _vm.listShown, 'is-rotated': _vm.listShown },attrs:{"disabled":!_vm.$builder.isEditing},domProps:{"textContent":_vm._s(_vm.listShown ? 'Close Menu' : 'Open menu')},on:{"click":_vm.newSection}}):_vm._e()])]),_c('ul',{ref:"menu",staticClass:"menu",class:{ 'is-visiable': _vm.listShown }},_vm._l((_vm.groups),function(group,name){return (group.length)?_c('li',{staticClass:"menu-group"},[_c('div',{staticClass:"menu-header",on:{"click":_vm.toggleGroupVisibility}},[_c('span',{staticClass:"menu-title"},[_vm._v(_vm._s(name))]),_c('span',{staticClass:"menu-icon"},[_c('VuseIcon',{attrs:{"name":"arrowDown"}})],1)]),_c('div',{staticClass:"menu-body"},[_vm._l((group),function(section){return [_c('a',{staticClass:"menu-element",on:{"click":function($event){_vm.addSection(section);},"drag":function($event){_vm.currentSection = section;}}},[(section.cover)?_c('img',{staticClass:"menu-elementImage",attrs:{"src":section.cover}}):_vm._e(),_c('span',{staticClass:"menu-elementTitle"},[_vm._v(_vm._s(section.name))])])]})],2)]):_vm._e()}))])};
+  var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{ref:"artboard",staticClass:"artboard",class:{ 'is-sorting': _vm.$builder.isSorting, 'is-editable': _vm.$builder.isEditing },attrs:{"id":"artboard"}},[_vm._l((_vm.$builder.sections),function(section){return _c(section.name,{key:section.id,tag:"component",attrs:{"id":section.id}})}),(!_vm.$builder.sections.length)?_c('div',{staticClass:"page--copy"},[_vm._v("There are no email sections yet. To start adding, please select a section on the right and click on it.")]):_vm._e()],2),_c('div',{staticClass:"controller"},[(_vm.showIntro && !this.$builder.sections.length)?_c('div',{staticClass:"controller-intro"},[_c('label',{attrs:{"for":"projectName"}},[_vm._v("Hello, start your project")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.title),expression:"title"}],staticClass:"controller-input",attrs:{"id":"projectName","placeholder":"project name"},domProps:{"value":(_vm.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.title=$event.target.value;}}}),(_vm.themes)?[_c('div',{staticClass:"controller-themes"},_vm._l((_vm.themes),function(theme){return _c('button',{staticClass:"controller-theme",on:{"click":function($event){_vm.addTheme(theme);}}},[_vm._v(_vm._s(theme.name))])}))]:_vm._e()],2):_vm._e(),_c('div',{staticClass:"controller-panel"},[(_vm.actions.includes('save'))?_c('button',{staticClass:"btn m-mini m-expected-action",domProps:{"textContent":_vm._s('Save')},on:{"click":_vm.submit}}):_vm._e(),(!_vm.tempSections && _vm.actions.includes('clear'))?_c('button',{staticClass:"btn m-mini m-danger",domProps:{"textContent":_vm._s('Clear all')},on:{"click":_vm.clearSections}}):_vm._e(),(_vm.tempSections && _vm.actions.includes('undo'))?_c('button',{staticClass:"btn m-mini",domProps:{"textContent":_vm._s('Undo')},on:{"click":_vm.undo}}):_vm._e(),(_vm.actions.includes('reorder'))?_c('button',{staticClass:"btn m-mini",domProps:{"textContent":_vm._s(_vm.$builder.isSorting ? 'Disable Reorder Mode' : 'Enable Reorder Mode')},on:{"click":_vm.toggleSort}}):_vm._e(),(_vm.actions.includes('toggle-menu'))?_c('button',{staticClass:"btn m-mini",class:{ 'is-red': _vm.listShown, 'is-rotated': _vm.listShown },attrs:{"disabled":!_vm.$builder.isEditing},domProps:{"textContent":_vm._s(_vm.listShown ? 'Close Menu' : 'Open menu')},on:{"click":_vm.newSection}}):_vm._e()])]),_c('ul',{ref:"menu",staticClass:"menu",class:{ 'is-visiable': _vm.listShown }},_vm._l((_vm.groups),function(group,name){return (group.length)?_c('li',{staticClass:"menu-group"},[_c('div',{staticClass:"menu-header",on:{"click":_vm.toggleGroupVisibility}},[_c('span',{staticClass:"menu-title"},[_vm._v(_vm._s(name))]),_c('span',{staticClass:"menu-icon"},[_c('VuseIcon',{attrs:{"name":"arrowDown"}})],1)]),_c('div',{staticClass:"menu-body"},[_vm._l((group),function(section){return [_c('a',{staticClass:"menu-element",on:{"click":function($event){_vm.addSection(section);},"drag":function($event){_vm.onDrag(section);}}},[(section.cover)?_c('img',{staticClass:"menu-elementImage",attrs:{"src":section.cover}}):_vm._e(),_c('span',{staticClass:"menu-elementTitle"},[_vm._v(_vm._s(section.name))])])]})],2)]):_vm._e()}))])};
   var __vue_staticRenderFns__ = [];
 
     /* style */
@@ -8562,8 +8586,12 @@
     },
     beforeDestroy: function beforeDestroy () {
       this.hideStyler();
-      this.$refs.styler.remove();
-      this.el.classList.remove('is-editable');
+      if (this.$refs.styler) {
+        this.$refs.styler.remove();
+      }
+      if (this.el && this.el.classList) {
+        this.el.classList.remove('is-editable');
+      }
       this.el.removeEventListener('click', this.showStyler);
       document.removeEventListener('click', this.hideStyler, true);
     },
@@ -8618,7 +8646,6 @@
         });
       },
       removeSection: function removeSection () {
-        console.log('removeSection in Styler', this.section);
         this.$builder.remove(this.section);
       },
       execute: function execute (command, value) {

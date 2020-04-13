@@ -145,8 +145,12 @@ export default {
   },
   beforeDestroy () {
     this.hideStyler();
-    this.$refs.styler.remove();
-    this.el.classList.remove('is-editable');
+    if (this.$refs.styler) {
+      this.$refs.styler.remove();
+    }
+    if (this.el && this.el.classList) {
+      this.el.classList.remove('is-editable');
+    }
     this.el.removeEventListener('click', this.showStyler);
     document.removeEventListener('click', this.hideStyler, true);
   },

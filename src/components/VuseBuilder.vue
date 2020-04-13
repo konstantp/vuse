@@ -12,7 +12,7 @@
 
       div.page--copy(
         v-if='!$builder.sections.length'
-      ) There are no email sections yet. To start adding, please click plus icon on the right
+      ) There are no email sections yet. To start adding, please select a section on the right and click on it.
 
     .controller
       .controller-intro(v-if="showIntro && !this.$builder.sections.length")
@@ -73,7 +73,7 @@
           template(v-for="section in group")
             a.menu-element(
               @click="addSection(section)"
-              @drag="currentSection = section"
+              @drag="onDrag(section)"
             )
               img.menu-elementImage(v-if="section.cover" :src="section.cover")
               span.menu-elementTitle {{ section.name }}
@@ -143,12 +143,21 @@ export default {
     this.$builder.rootEl = this.$refs.artboard;
     this.$parent.$on('saveVuseTemplate', this.submit);
 
-    this.$on('removeSection', (section) => {
+    this.$on('vuseRemoveSection', (section) => {
       const sectionObj = this.$builder.sections.find(sec => sec.id === section.id)
       if (sectionObj) {
         this.$builder.remove(sectionObj);
       }
     });
+
+    this.$parent.$on('vuseClearAll', this.clearSections);
+
+    this.$on('vuseDisableReorderMode', () => {
+      if (this.$builder.isSorting) {
+        this.toggleSort();
+      }
+    });
+
     const groups = this.$refs.menu.querySelectorAll('.menu-body');
     const _self = this;
     groups.forEach((group) => {
@@ -173,10 +182,12 @@ export default {
       disabled: true,
       preventOnFilter: false,
       onAdd (evt) {
+        console.log('sort onAdd', evt);
         _self.addSection(_self.currentSection, evt.newIndex);
         evt.item.remove();
       },
       onUpdate (evt) {
+        console.log('sort onUdpate', evt);
         _self.$builder.sort(evt.oldIndex, evt.newIndex);
       }
     });
@@ -192,7 +203,9 @@ export default {
 
   beforeDestroy () {
     this.$parent.$off('saveVuseTemplate');
-    this.$off('removeSection');
+    this.$off('vuseRemoveSection');
+    this.$off('vuseDisableReorderMode');
+    this.$parent.$off('vuseClearAll');
     this.$builder.clear();
   },
   methods: {
@@ -208,6 +221,9 @@ export default {
       this.$builder.add(section, position);
     },
     clearSections () {
+      if (this.$builder.isSorting) {
+        this.toggleSort();
+      }
       this.tempSections = this.$builder.clear();
       setTimeout(() => {
         this.tempSections = null;
@@ -220,7 +236,16 @@ export default {
     addTheme (theme) {
       this.$builder.set(theme);
     },
+    onDrag(section) {
+      // console.log('onDrag this.$builder.isSorting', this.$builder, this.$builder.isSorting);
+      if (!this.$builder.isSorting) {
+        this.toggleSort();
+      }
+      this.currentSection = section;
+    },
+
     toggleSort () {
+      // console.log('toggleSort', this.$builder.isSorting);
       this.$builder.isSorting = !this.$builder.isSorting;
       this.$builder.isEditing = !this.$builder.isSorting;
       if (!this.$builder.isSorting && this.sortable) {
