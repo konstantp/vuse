@@ -6,12 +6,11 @@
     )
       draggable(
           v-model="$builder.sections"
-          :sort="true"
+          :options="{ sort: true, group: { name: 'artboard', pull: false, put: true }}"
           @start="drag=true"
           @end="drag=false"
           @add="onAdd"
           @update="onUpdate"
-          :group="{ name: 'artboard', pull: false, put: true }"
         )
           component(v-for='section in $builder.sections'
             :is='section.name'
@@ -131,8 +130,7 @@ export default {
       tempSections: null,
       sections: this.getSections(),
       currentSection: '',
-      groups: {},
-      sortable: null
+      groups: {}
     }
   },
 
@@ -140,14 +138,10 @@ export default {
     title (value) {
       this.$builder.title = value;
       document.title = value;
-    },
-    groups (value) {
-      console.log('groups', value);
     }
   },
   created () {
     // sets the initial data.
-    console.log('VuseBuilder created');
     this.$builder.set(this.data);
     this.title = this.$builder.title;
     this.themes = this.$builder.themes;
@@ -155,7 +149,6 @@ export default {
     this.$set(this, 'sections', this.getSections());
   },
   mounted () {
-    console.log('VuseBuilder mounted');
     this.$builder.rootEl = this.$refs.artboard;
     this.$parent.$on('saveVuseTemplate', this.submit);
 
@@ -167,30 +160,18 @@ export default {
     });
 
     this.$parent.$on('vuseClearAll', this.clearSections);
-
-    this.$on('vuseDisableReorderMode', () => {
-      if (this.$builder.isSorting) {
-        this.toggleSort();
-      }
-    });
-
-    // this.initDragDrop();
-
     this.$set(this, 'listShown', this.alwaysShowMenu);
   },
 
   updated () {
-    console.log('VuseBuilder udpated');
     if (this.$builder.scrolling) {
       this.$builder.scrolling(this.$refs.artboard);
     }
   },
 
   beforeDestroy () {
-    console.log('VuseBuilder beforeDestroy');
     this.$parent.$off('saveVuseTemplate');
     this.$off('vuseRemoveSection');
-    this.$off('vuseDisableReorderMode');
     this.$parent.$off('vuseClearAll');
     this.$builder.clear();
   },
@@ -204,26 +185,10 @@ export default {
       this.toggleListVisibility();
     },
     addSection (section, position) {
-      // if (event.srcElement) {
-      //   sectionObj = this.sections.find(sec => sec.name === event.srcElement.text);
-      // }
-      console.log('addSection', section, position, this.sections);
       this.$builder.add(section, position === undefined ? this.$builder.sections.length : position);
     },
     clearSections () {
-      // this.tempSections = [...this.$builder.sections];
-
-      // const totalSections = this.$builder.sections.length;
-      //
-      // for (let sectionCounter = 0; sectionCounter < totalSections; sectionCounter++) {
-      //   this.$builder.remove(this.$builder.sections[0]);
-      // }
-
       this.tempSections = this.$builder.clear();
-
-      // if (this.$builder.isSorting) {
-      //   this.toggleSort();
-      // }
       setTimeout(() => {
         this.tempSections = null;
       }, 5000);
@@ -237,35 +202,16 @@ export default {
     },
     onDrag(event) {
       const currentSection = this.sections.find(sec => sec.name === event.item.text);
-      console.log('onDrag this.$builder.isSorting', this.$builder, this.$builder.isSorting, event, currentSection);
-      if (!this.$builder.isSorting) {
-        this.toggleSort();
-      }
       this.$set(this, 'currentSection', currentSection);
-    },
-    toggleSort () {
-      console.log('toggleSort', this.$builder.isSorting);
-      // this.$builder.isSorting = !this.$builder.isSorting;
-      // this.$builder.isEditing = !this.$builder.isSorting;
-      // if (!this.$builder.isSorting && this.sortable) {
-      //   this.sortable.option('sort', false);
-      //   this.sortable.option('disabled', true);
-      //   return;
-      // }
-      // this.sortable.option('disabled', false);
-      // this.sortable.option('sort', true);
     },
     toggleListVisibility () {
       this.listShown = !this.listShown;
-      this.sortable.option('disabled', !this.listShown);
     },
     showList () {
       this.listShown = true;
-      this.sortable.option('disabled', false);
     },
     hideList () {
       this.listShown = false;
-      this.sortable.option('disabled', true);
     },
     toggleGroupVisibility (e) {
       const element = e.target;
@@ -315,57 +261,12 @@ export default {
     },
 
     onAdd (evt) {
-      console.log('sort onAdd', evt, this.currentSection);
       this.addSection(this.currentSection, evt.newIndex);
-      evt.item.remove();
     },
     onUpdate (evt) {
       console.log('sort onUdpate', evt);
       this.$builder.sort(evt.oldIndex, evt.newIndex);
     },
-
-    initDragDrop() {
-      const groups = this.$refs.menu.querySelectorAll('.menu-body');
-      const _self = this;
-      groups.forEach((group) => {
-        Sortable.create(group, {
-          group: {
-            name: 'sections-group',
-            put: false,
-            pull: 'clone',
-            revertClone: true
-          },
-          sort: false
-        });
-      });
-      this.sortable = Sortable.create(this.$refs.artboard, {
-        group: {
-          name: 'artboard',
-          put: () => true
-        },
-        animation: 150,
-        scroll: true,
-        scrollSpeed: 10,
-        sort: false,
-        disabled: true,
-        preventOnFilter: false,
-        onClone (evt) {
-          console.log('sort onClone', evt);
-        },
-        onRemove (evt) {
-          console.log('sort onRemove', evt);
-        },
-        onAdd (evt) {
-          console.log('sort onAdd', evt, _self.currentSection);
-          _self.addSection(_self.currentSection, evt.newIndex);
-          evt.item.remove();
-        },
-        onUpdate (evt) {
-          console.log('sort onUdpate', evt);
-          _self.$builder.sort(evt.oldIndex, evt.newIndex);
-        }
-      });
-    }
   }
 };
 </script>

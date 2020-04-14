@@ -3834,9 +3834,7 @@
 
   var Section = function Section (options) {
     this.id = counter++;
-    console.log('section  constructor before', options);
     options = Object.assign({}, SECTION_OPTIONS, options);
-    console.log('section  constructor after', options.schema);
     this.name = options.name;
     this.schema = options.schema;
     this.isRemovable = ('isRemovable' in options) ? !!options.isRemovable : true;
@@ -4296,7 +4294,7 @@
         children = el.children;
 
     while (i < children.length) {
-      if (children[i].style.display !== 'none' && children[i] !== Sortable$1.ghost && children[i] !== Sortable$1.dragged && closest(children[i], options.draggable, el, false)) {
+      if (children[i].style.display !== 'none' && children[i] !== Sortable.ghost && children[i] !== Sortable.dragged && closest(children[i], options.draggable, el, false)) {
         if (currentChild === childNum) {
           return children[i];
         }
@@ -4320,7 +4318,7 @@
   function lastChild(el, selector) {
     var last = el.lastElementChild;
 
-    while (last && (last === Sortable$1.ghost || css(last, 'display') === 'none' || selector && !matches(last, selector))) {
+    while (last && (last === Sortable.ghost || css(last, 'display') === 'none' || selector && !matches(last, selector))) {
       last = last.previousElementSibling;
     }
 
@@ -4345,7 +4343,7 @@
 
 
     while (el = el.previousElementSibling) {
-      if (el.nodeName.toUpperCase() !== 'TEMPLATE' && el !== Sortable$1.clone && (!selector || matches(el, selector))) {
+      if (el.nodeName.toUpperCase() !== 'TEMPLATE' && el !== Sortable.clone && (!selector || matches(el, selector))) {
         index++;
       }
     }
@@ -4508,7 +4506,7 @@
         if (!this.options.animation) { return; }
         var children = [].slice.call(this.el.children);
         children.forEach(function (child) {
-          if (css(child, 'display') === 'none' || child === Sortable$1.ghost) { return; }
+          if (css(child, 'display') === 'none' || child === Sortable.ghost) { return; }
           animationStates.push({
             target: child,
             rect: getRect(child)
@@ -4801,7 +4799,7 @@
         originalEvent = _ref.evt,
         data = _objectWithoutProperties(_ref, ["evt"]);
 
-    PluginManager.pluginEvent.bind(Sortable$1)(eventName, sortable, _objectSpread({
+    PluginManager.pluginEvent.bind(Sortable)(eventName, sortable, _objectSpread({
       dragEl: dragEl,
       parentEl: parentEl,
       ghostEl: ghostEl,
@@ -4812,7 +4810,7 @@
       cloneHidden: cloneHidden,
       dragStarted: moved,
       putSortable: putSortable,
-      activeSortable: Sortable$1.active,
+      activeSortable: Sortable.active,
       originalEvent: originalEvent,
       oldIndex: oldIndex,
       oldDraggableIndex: oldDraggableIndex,
@@ -5056,7 +5054,7 @@
    */
 
 
-  function Sortable$1(el, options) {
+  function Sortable(el, options) {
     var this$1 = this;
 
     if (!(el && el.nodeType && el.nodeType === 1)) {
@@ -5110,7 +5108,7 @@
         x: 0,
         y: 0
       },
-      supportPointer: Sortable$1.supportPointer !== false && 'PointerEvent' in window,
+      supportPointer: Sortable.supportPointer !== false && 'PointerEvent' in window,
       emptyInsertThreshold: 5
     };
     PluginManager.initializePlugins(this, el, defaults); // Set default options
@@ -5156,10 +5154,10 @@
     _extends(this, AnimationStateManager());
   }
 
-  Sortable$1.prototype =
+  Sortable.prototype =
   /** @lends Sortable.prototype */
   {
-    constructor: Sortable$1,
+    constructor: Sortable,
     _isOutsideThisEl: function _isOutsideThisEl(target) {
       if (!this.el.contains(target) && target !== this.el) {
         lastTarget = null;
@@ -5286,7 +5284,7 @@
         nextEl = dragEl.nextSibling;
         lastDownEl = target;
         activeGroup = options.group;
-        Sortable$1.dragged = dragEl;
+        Sortable.dragged = dragEl;
         tapEvt = {
           target: dragEl,
           clientX: (touch || evt).clientX,
@@ -5303,7 +5301,7 @@
             evt: evt
           });
 
-          if (Sortable$1.eventCanceled) {
+          if (Sortable.eventCanceled) {
             _this._onDrop();
 
             return;
@@ -5352,7 +5350,7 @@
         }); // Delay is impossible for native DnD in Edge or IE
 
         if (options.delay && (!options.delayOnTouchOnly || touch) && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
-          if (Sortable$1.eventCanceled) {
+          if (Sortable.eventCanceled) {
             this._onDrop();
 
             return;
@@ -5445,7 +5443,7 @@
 
         !fallback && toggleClass(dragEl, options.dragClass, false);
         toggleClass(dragEl, options.ghostClass, true);
-        Sortable$1.active = this;
+        Sortable.active = this;
         fallback && this._appendGhost(); // Drag start event
 
         _dispatchEvent({
@@ -5517,7 +5515,7 @@
             dx = (touch.clientX - tapEvt.clientX + fallbackOffset.x) / (scaleX || 1) + (relativeScrollOffset ? relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0] : 0) / (scaleX || 1),
             dy = (touch.clientY - tapEvt.clientY + fallbackOffset.y) / (scaleY || 1) + (relativeScrollOffset ? relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1] : 0) / (scaleY || 1); // only set the status to dragging, when we are actually dragging
 
-        if (!Sortable$1.active && !awaitingDragStarted) {
+        if (!Sortable.active && !awaitingDragStarted) {
           if (fallbackTolerance && Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) < fallbackTolerance) {
             return;
           }
@@ -5596,7 +5594,7 @@
         css(ghostEl, 'position', PositionGhostAbsolutely ? 'absolute' : 'fixed');
         css(ghostEl, 'zIndex', '100000');
         css(ghostEl, 'pointerEvents', 'none');
-        Sortable$1.ghost = ghostEl;
+        Sortable.ghost = ghostEl;
         container.appendChild(ghostEl); // Set transform-origin
 
         css(ghostEl, 'transform-origin', tapDistanceLeft / parseInt(ghostEl.style.width) * 100 + '% ' + tapDistanceTop / parseInt(ghostEl.style.height) * 100 + '%');
@@ -5615,7 +5613,7 @@
         evt: evt
       });
 
-      if (Sortable$1.eventCanceled) {
+      if (Sortable.eventCanceled) {
         this._onDrop();
 
         return;
@@ -5623,7 +5621,7 @@
 
       pluginEvent('setupClone', this);
 
-      if (!Sortable$1.eventCanceled) {
+      if (!Sortable.eventCanceled) {
         cloneEl = clone(dragEl);
         cloneEl.draggable = false;
         cloneEl.style['will-change'] = '';
@@ -5631,13 +5629,13 @@
         this._hideClone();
 
         toggleClass(cloneEl, this.options.chosenClass, false);
-        Sortable$1.clone = cloneEl;
+        Sortable.clone = cloneEl;
       } // #1143: IFrame support workaround
 
 
       _this.cloneId = _nextTick(function () {
         pluginEvent('clone', _this);
-        if (Sortable$1.eventCanceled) { return; }
+        if (Sortable.eventCanceled) { return; }
 
         if (!_this.options.removeCloneOnHide) {
           rootEl.insertBefore(cloneEl, dragEl);
@@ -5691,7 +5689,7 @@
           revert,
           options = this.options,
           group = options.group,
-          activeSortable = Sortable$1.active,
+          activeSortable = Sortable.active,
           isOwner = activeGroup === group,
           canSort = options.sort,
           fromSortable = putSortable || activeSortable,
@@ -5751,9 +5749,9 @@
             toggleClass(dragEl, options.ghostClass, true);
           }
 
-          if (putSortable !== _this && _this !== Sortable$1.active) {
+          if (putSortable !== _this && _this !== Sortable.active) {
             putSortable = _this;
-          } else if (_this === Sortable$1.active && putSortable) {
+          } else if (_this === Sortable.active && putSortable) {
             putSortable = null;
           } // Animation
 
@@ -5811,7 +5809,7 @@
 
       target = closest(target, options.draggable, el, true);
       dragOverEvent('dragOver');
-      if (Sortable$1.eventCanceled) { return completedFired; }
+      if (Sortable.eventCanceled) { return completedFired; }
 
       if (dragEl.contains(evt.target) || target.animated && target.animatingX && target.animatingY || _this._ignoreWhileAnimating === target) {
         return completed(false);
@@ -5824,7 +5822,7 @@
         vertical = this._getDirection(evt, target) === 'vertical';
         dragRect = getRect(dragEl);
         dragOverEvent('dragOverValid');
-        if (Sortable$1.eventCanceled) { return completedFired; }
+        if (Sortable.eventCanceled) { return completedFired; }
 
         if (revert) {
           parentEl = rootEl; // actualization
@@ -5835,7 +5833,7 @@
 
           dragOverEvent('revert');
 
-          if (!Sortable$1.eventCanceled) {
+          if (!Sortable.eventCanceled) {
             if (nextEl) {
               rootEl.insertBefore(dragEl, nextEl);
             } else {
@@ -5985,7 +5983,7 @@
       newIndex = index(dragEl);
       newDraggableIndex = index(dragEl, options.draggable);
 
-      if (Sortable$1.eventCanceled) {
+      if (Sortable.eventCanceled) {
         this._nulling();
 
         return;
@@ -6113,7 +6111,7 @@
             }
           }
 
-          if (Sortable$1.active) {
+          if (Sortable.active) {
             /* jshint eqnull:true */
             if (newIndex == null || newIndex === -1) {
               newIndex = oldIndex;
@@ -6137,7 +6135,7 @@
     },
     _nulling: function _nulling() {
       pluginEvent('nulling', this);
-      rootEl = dragEl = parentEl = ghostEl = nextEl = cloneEl = lastDownEl = cloneHidden = tapEvt = touchEvt = moved = newIndex = newDraggableIndex = oldIndex = oldDraggableIndex = lastTarget = lastDirection = putSortable = activeGroup = Sortable$1.dragged = Sortable$1.ghost = Sortable$1.clone = Sortable$1.active = null;
+      rootEl = dragEl = parentEl = ghostEl = nextEl = cloneEl = lastDownEl = cloneHidden = tapEvt = touchEvt = moved = newIndex = newDraggableIndex = oldIndex = oldDraggableIndex = lastTarget = lastDirection = putSortable = activeGroup = Sortable.dragged = Sortable.ghost = Sortable.clone = Sortable.active = null;
       savedInputChecked.forEach(function (el) {
         el.checked = true;
       });
@@ -6291,7 +6289,7 @@
     _hideClone: function _hideClone() {
       if (!cloneHidden) {
         pluginEvent('hideClone', this);
-        if (Sortable$1.eventCanceled) { return; }
+        if (Sortable.eventCanceled) { return; }
         css(cloneEl, 'display', 'none');
 
         if (this.options.removeCloneOnHide && cloneEl.parentNode) {
@@ -6310,7 +6308,7 @@
 
       if (cloneHidden) {
         pluginEvent('showClone', this);
-        if (Sortable$1.eventCanceled) { return; } // show clone at dragEl or original position
+        if (Sortable.eventCanceled) { return; } // show clone at dragEl or original position
 
         if (rootEl.contains(dragEl) && !this.options.group.revertClone) {
           rootEl.insertBefore(cloneEl, dragEl);
@@ -6489,14 +6487,14 @@
 
   if (documentExists) {
     on(document, 'touchmove', function (evt) {
-      if ((Sortable$1.active || awaitingDragStarted) && evt.cancelable) {
+      if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
         evt.preventDefault();
       }
     });
   } // Export utils
 
 
-  Sortable$1.utils = {
+  Sortable.utils = {
     on: on,
     off: off,
     css: css,
@@ -6521,7 +6519,7 @@
    * @return {Sortable|undefined}         The instance of Sortable
    */
 
-  Sortable$1.get = function (element) {
+  Sortable.get = function (element) {
     return element[expando];
   };
   /**
@@ -6530,7 +6528,7 @@
    */
 
 
-  Sortable$1.mount = function () {
+  Sortable.mount = function () {
     var arguments$1 = arguments;
 
     for (var _len = arguments.length, plugins = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -6543,7 +6541,7 @@
         throw "Sortable: Mounted plugin must be a constructor function, not ".concat({}.toString.call(plugin));
       }
 
-      if (plugin.utils) { Sortable$1.utils = _objectSpread({}, Sortable$1.utils, plugin.utils); }
+      if (plugin.utils) { Sortable.utils = _objectSpread({}, Sortable.utils, plugin.utils); }
       PluginManager.mount(plugin);
     });
   };
@@ -6554,12 +6552,12 @@
    */
 
 
-  Sortable$1.create = function (el, options) {
-    return new Sortable$1(el, options);
+  Sortable.create = function (el, options) {
+    return new Sortable(el, options);
   }; // Export
 
 
-  Sortable$1.version = version;
+  Sortable.version = version;
 
   var autoScrolls = [],
       scrollEl,
@@ -6766,7 +6764,7 @@
           autoScrolls[layersOut].pid = setInterval(function () {
             // emulate drag over during autoscroll (fallback), emulating native DnD behaviour
             if (isFallback && this.layer === 0) {
-              Sortable$1.active._onTouchMove(touchEvt$1); // To move ghost if it is positioned absolutely
+              Sortable.active._onTouchMove(touchEvt$1); // To move ghost if it is positioned absolutely
 
             }
 
@@ -6774,7 +6772,7 @@
             var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
 
             if (typeof scrollCustomFn === 'function') {
-              if (scrollCustomFn.call(Sortable$1.dragged.parentNode[expando], scrollOffsetX, scrollOffsetY, evt, touchEvt$1, autoScrolls[this.layer].el) !== 'continue') {
+              if (scrollCustomFn.call(Sortable.dragged.parentNode[expando], scrollOffsetX, scrollOffsetY, evt, touchEvt$1, autoScrolls[this.layer].el) !== 'continue') {
                 return;
               }
             }
@@ -7587,17 +7585,17 @@
     });
   }
 
-  Sortable$1.mount(new AutoScrollPlugin());
-  Sortable$1.mount(Remove, Revert);
+  Sortable.mount(new AutoScrollPlugin());
+  Sortable.mount(Remove, Revert);
 
   var sortable_esm = /*#__PURE__*/Object.freeze({
-    default: Sortable$1,
+    default: Sortable,
     MultiDrag: MultiDragPlugin,
-    Sortable: Sortable$1,
+    Sortable: Sortable,
     Swap: SwapPlugin
   });
 
-  var require$$0 = ( sortable_esm && Sortable$1 ) || sortable_esm;
+  var require$$0 = ( sortable_esm && Sortable ) || sortable_esm;
 
   var vuedraggable_common = createCommonjsModule(function (module) {
   module.exports =
@@ -10968,6 +10966,7 @@
       this.$parent.$on('saveVuseTemplate', this.submit);
 
       this.$on('vuseRemoveSection', function (section) {
+        console.log('vuseRemoveSection', section, this$1.$builder.sections);
         var sectionObj = this$1.$builder.sections.find(function (sec) { return sec.id === section.id; });
         if (sectionObj) {
           this$1.$builder.remove(sectionObj);
@@ -10975,20 +10974,10 @@
       });
 
       this.$parent.$on('vuseClearAll', this.clearSections);
-
-      this.$on('vuseDisableReorderMode', function () {
-        if (this$1.$builder.isSorting) {
-          this$1.toggleSort();
-        }
-      });
-
-      // this.initDragDrop();
-
       this.$set(this, 'listShown', this.alwaysShowMenu);
     },
 
     updated: function updated () {
-      console.log('VuseBuilder udpated');
       if (this.$builder.scrolling) {
         this.$builder.scrolling(this.$refs.artboard);
       }
@@ -10998,7 +10987,6 @@
       console.log('VuseBuilder beforeDestroy');
       this.$parent.$off('saveVuseTemplate');
       this.$off('vuseRemoveSection');
-      this.$off('vuseDisableReorderMode');
       this.$parent.$off('vuseClearAll');
       this.$builder.clear();
     },
@@ -11021,19 +11009,7 @@
       clearSections: function clearSections () {
         var this$1 = this;
 
-        // this.tempSections = [...this.$builder.sections];
-
-        // const totalSections = this.$builder.sections.length;
-        //
-        // for (let sectionCounter = 0; sectionCounter < totalSections; sectionCounter++) {
-        //   this.$builder.remove(this.$builder.sections[0]);
-        // }
-
         this.tempSections = this.$builder.clear();
-
-        // if (this.$builder.isSorting) {
-        //   this.toggleSort();
-        // }
         setTimeout(function () {
           this$1.tempSections = null;
         }, 5000);
@@ -11048,22 +11024,7 @@
       onDrag: function onDrag(event) {
         var currentSection = this.sections.find(function (sec) { return sec.name === event.item.text; });
         console.log('onDrag this.$builder.isSorting', this.$builder, this.$builder.isSorting, event, currentSection);
-        if (!this.$builder.isSorting) {
-          this.toggleSort();
-        }
         this.$set(this, 'currentSection', currentSection);
-      },
-      toggleSort: function toggleSort () {
-        console.log('toggleSort', this.$builder.isSorting);
-        // this.$builder.isSorting = !this.$builder.isSorting;
-        // this.$builder.isEditing = !this.$builder.isSorting;
-        // if (!this.$builder.isSorting && this.sortable) {
-        //   this.sortable.option('sort', false);
-        //   this.sortable.option('disabled', true);
-        //   return;
-        // }
-        // this.sortable.option('disabled', false);
-        // this.sortable.option('sort', true);
       },
       toggleListVisibility: function toggleListVisibility () {
         this.listShown = !this.listShown;
@@ -11129,64 +11090,19 @@
       },
 
       onAdd: function onAdd (evt) {
-        console.log('sort onAdd', evt, this.currentSection);
         this.addSection(this.currentSection, evt.newIndex);
-        evt.item.remove();
       },
       onUpdate: function onUpdate (evt) {
         console.log('sort onUdpate', evt);
         this.$builder.sort(evt.oldIndex, evt.newIndex);
       },
-
-      initDragDrop: function initDragDrop() {
-        var groups = this.$refs.menu.querySelectorAll('.menu-body');
-        var _self = this;
-        groups.forEach(function (group) {
-          Sortable.create(group, {
-            group: {
-              name: 'sections-group',
-              put: false,
-              pull: 'clone',
-              revertClone: true
-            },
-            sort: false
-          });
-        });
-        this.sortable = Sortable.create(this.$refs.artboard, {
-          group: {
-            name: 'artboard',
-            put: function () { return true; }
-          },
-          animation: 150,
-          scroll: true,
-          scrollSpeed: 10,
-          sort: false,
-          disabled: true,
-          preventOnFilter: false,
-          onClone: function onClone (evt) {
-            console.log('sort onClone', evt);
-          },
-          onRemove: function onRemove (evt) {
-            console.log('sort onRemove', evt);
-          },
-          onAdd: function onAdd (evt) {
-            console.log('sort onAdd', evt, _self.currentSection);
-            _self.addSection(_self.currentSection, evt.newIndex);
-            evt.item.remove();
-          },
-          onUpdate: function onUpdate (evt) {
-            console.log('sort onUdpate', evt);
-            _self.$builder.sort(evt.oldIndex, evt.newIndex);
-          }
-        });
-      }
     }
   };
 
   /* script */
               var __vue_script__ = script;
   /* template */
-  var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{ref:"artboard",staticClass:"artboard",class:{ 'is-sorting': _vm.$builder.isSorting, 'is-editable': _vm.$builder.isEditing },attrs:{"id":"artboard"}},[_c('draggable',{attrs:{"sort":true,"group":{ name: 'artboard', pull: false, put: true }},on:{"start":function($event){_vm.drag=true;},"end":function($event){_vm.drag=false;},"add":_vm.onAdd,"update":_vm.onUpdate},model:{value:(_vm.$builder.sections),callback:function ($$v) {_vm.$set(_vm.$builder, "sections", $$v);},expression:"$builder.sections"}},_vm._l((_vm.$builder.sections),function(section){return _c(section.name,{key:section.id,tag:"component",attrs:{"id":section.id}})})),(!_vm.$builder.sections.length)?_c('div',{staticClass:"page--copy"},[_vm._v("There are no email sections yet. To start adding, please select a section on the right and click on it.")]):_vm._e()],1),_c('div',{staticClass:"controller"},[(_vm.showIntro && !this.$builder.sections.length)?_c('div',{staticClass:"controller-intro"},[_c('label',{attrs:{"for":"projectName"}},[_vm._v("Hello, start your project")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.title),expression:"title"}],staticClass:"controller-input",attrs:{"id":"projectName","placeholder":"project name"},domProps:{"value":(_vm.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.title=$event.target.value;}}}),(_vm.themes)?[_c('div',{staticClass:"controller-themes"},_vm._l((_vm.themes),function(theme){return _c('button',{staticClass:"controller-theme",on:{"click":function($event){_vm.addTheme(theme);}}},[_vm._v(_vm._s(theme.name))])}))]:_vm._e()],2):_vm._e(),_c('div',{staticClass:"controller-panel"},[(_vm.actions.includes('save'))?_c('button',{staticClass:"btn m-mini m-expected-action",domProps:{"textContent":_vm._s('Save')},on:{"click":_vm.submit}}):_vm._e(),(!_vm.tempSections && _vm.actions.includes('clear') && _vm.$builder.sections.length)?_c('button',{staticClass:"btn m-mini m-danger",domProps:{"textContent":_vm._s('Clear all')},on:{"click":_vm.clearSections}}):_vm._e(),(_vm.tempSections && _vm.actions.includes('undo'))?_c('button',{staticClass:"btn m-mini",domProps:{"textContent":_vm._s('Undo')},on:{"click":_vm.undo}}):_vm._e(),(_vm.actions.includes('toggle-menu'))?_c('button',{staticClass:"btn m-mini",class:{ 'is-red': _vm.listShown, 'is-rotated': _vm.listShown },attrs:{"disabled":!_vm.$builder.isEditing},domProps:{"textContent":_vm._s(_vm.listShown ? 'Close Menu' : 'Open menu')},on:{"click":_vm.newSection}}):_vm._e()])]),_c('ul',{ref:"menu",staticClass:"menu",class:{ 'is-visiable': _vm.listShown }},_vm._l((_vm.groups),function(group,name){return (group.length)?_c('li',{staticClass:"menu-group"},[_c('div',{staticClass:"menu-header",on:{"click":_vm.toggleGroupVisibility}},[_c('span',{staticClass:"menu-title"},[_vm._v(_vm._s(name))]),_c('span',{staticClass:"menu-icon"},[_c('VuseIcon',{attrs:{"name":"arrowDown"}})],1)]),_c('div',{staticClass:"menu-body"},[_c('draggable',{attrs:{"options":{ sort: false, group: { name: ("sections-group-" + name), pull: 'clone', put: false } }},on:{"start":_vm.onDrag},model:{value:(group),callback:function ($$v) {group=$$v;},expression:"group"}},_vm._l((group),function(section){return _c('a',{key:section.name,staticClass:"menu-element",attrs:{"data-section":section.name},on:{"click":function($event){_vm.addSection(section);}}},[(section.cover)?_c('img',{staticClass:"menu-elementImage",attrs:{"src":section.cover}}):_vm._e(),_c('span',{staticClass:"menu-elementTitle"},[_vm._v(_vm._s(section.name))])])}))],1)]):_vm._e()}))])};
+  var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{ref:"artboard",staticClass:"artboard",class:{ 'is-sorting': _vm.$builder.isSorting, 'is-editable': _vm.$builder.isEditing },attrs:{"id":"artboard"}},[_c('draggable',{attrs:{"options":{ sort: true, group: { name: 'artboard', pull: false, put: true }}},on:{"start":function($event){_vm.drag=true;},"end":function($event){_vm.drag=false;},"add":_vm.onAdd,"update":_vm.onUpdate},model:{value:(_vm.$builder.sections),callback:function ($$v) {_vm.$set(_vm.$builder, "sections", $$v);},expression:"$builder.sections"}},_vm._l((_vm.$builder.sections),function(section){return _c(section.name,{key:section.id,tag:"component",attrs:{"id":section.id}})})),(!_vm.$builder.sections.length)?_c('div',{staticClass:"page--copy"},[_vm._v("There are no email sections yet. To start adding, please select a section on the right and click on it.")]):_vm._e()],1),_c('div',{staticClass:"controller"},[(_vm.showIntro && !this.$builder.sections.length)?_c('div',{staticClass:"controller-intro"},[_c('label',{attrs:{"for":"projectName"}},[_vm._v("Hello, start your project")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.title),expression:"title"}],staticClass:"controller-input",attrs:{"id":"projectName","placeholder":"project name"},domProps:{"value":(_vm.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.title=$event.target.value;}}}),(_vm.themes)?[_c('div',{staticClass:"controller-themes"},_vm._l((_vm.themes),function(theme){return _c('button',{staticClass:"controller-theme",on:{"click":function($event){_vm.addTheme(theme);}}},[_vm._v(_vm._s(theme.name))])}))]:_vm._e()],2):_vm._e(),_c('div',{staticClass:"controller-panel"},[(_vm.actions.includes('save'))?_c('button',{staticClass:"btn m-mini m-expected-action",domProps:{"textContent":_vm._s('Save')},on:{"click":_vm.submit}}):_vm._e(),(!_vm.tempSections && _vm.actions.includes('clear') && _vm.$builder.sections.length)?_c('button',{staticClass:"btn m-mini m-danger",domProps:{"textContent":_vm._s('Clear all')},on:{"click":_vm.clearSections}}):_vm._e(),(_vm.tempSections && _vm.actions.includes('undo'))?_c('button',{staticClass:"btn m-mini",domProps:{"textContent":_vm._s('Undo')},on:{"click":_vm.undo}}):_vm._e(),(_vm.actions.includes('toggle-menu'))?_c('button',{staticClass:"btn m-mini",class:{ 'is-red': _vm.listShown, 'is-rotated': _vm.listShown },attrs:{"disabled":!_vm.$builder.isEditing},domProps:{"textContent":_vm._s(_vm.listShown ? 'Close Menu' : 'Open menu')},on:{"click":_vm.newSection}}):_vm._e()])]),_c('ul',{ref:"menu",staticClass:"menu",class:{ 'is-visiable': _vm.listShown }},_vm._l((_vm.groups),function(group,name){return (group.length)?_c('li',{staticClass:"menu-group"},[_c('div',{staticClass:"menu-header",on:{"click":_vm.toggleGroupVisibility}},[_c('span',{staticClass:"menu-title"},[_vm._v(_vm._s(name))]),_c('span',{staticClass:"menu-icon"},[_c('VuseIcon',{attrs:{"name":"arrowDown"}})],1)]),_c('div',{staticClass:"menu-body"},[_c('draggable',{attrs:{"options":{ sort: false, group: { name: ("sections-group-" + name), pull: 'clone', put: false } }},on:{"start":_vm.onDrag},model:{value:(group),callback:function ($$v) {group=$$v;},expression:"group"}},_vm._l((group),function(section){return _c('a',{key:section.name,staticClass:"menu-element",attrs:{"data-section":section.name},on:{"click":function($event){_vm.addSection(section);}}},[(section.cover)?_c('img',{staticClass:"menu-elementImage",attrs:{"src":section.cover}}):_vm._e(),_c('span',{staticClass:"menu-elementTitle"},[_vm._v(_vm._s(section.name))])])}))],1)]):_vm._e()}))])};
   var __vue_staticRenderFns__ = [];
 
     /* style */
