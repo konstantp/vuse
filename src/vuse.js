@@ -40,6 +40,7 @@ class Vuse {
     this.assets = {
       css: options.assets.css || 'dist/css/app.css'
     }
+    console.log('vuse constructor', options);
     this.installPlugins();
   }
 
@@ -49,6 +50,10 @@ class Vuse {
    */
 
   add (options, position) {
+    if (this.sections.length < position) {
+      position = this.sections.length;
+    }
+    console.log('add section', options, position);
     if (position !== undefined) {
       this.sections.splice(position, 0, new Section(options));
       return;
@@ -72,6 +77,7 @@ class Vuse {
   remove (section) {
     const id = this.sections.findIndex(s => s.id === section.id);
     this.sections.splice(id, 1);
+    console.log('section in remove after it has been deleted', section);
     section.destroy();
   }
 
@@ -101,9 +107,11 @@ class Vuse {
   * clears the builder sections.
   */
   clear () {
-    const tempSections = this.sections;
-    this.sections.forEach(section => section.destroy());
+    console.log('clear before', ...this.sections);
+    const tempSections = [...this.sections];
+    // this.sections.forEach(section => section.destroy());
     this.sections = [];
+    console.log('clear after', ...this.sections);
     return tempSections;
   }
 

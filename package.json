@@ -73,7 +73,8 @@
     "popper.js": "^1.14.4",
     "save-as": "^0.1.8",
     "sortablejs": "^1.6.1",
-    "vue-color": "^2.7.1"
+    "vue-color": "^2.7.1",
+    "vuedraggable": "^2.23.2"
   },
   "license": "MIT",
   "files": [
