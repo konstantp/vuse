@@ -10929,8 +10929,7 @@ var script = {
       tempSections: null,
       sections: this.getSections(),
       currentSection: '',
-      groups: {},
-      sortable: null
+      groups: {}
     }
   },
 
@@ -10938,14 +10937,10 @@ var script = {
     title: function title (value) {
       this.$builder.title = value;
       document.title = value;
-    },
-    groups: function groups (value) {
-      console.log('groups', value);
     }
   },
   created: function created () {
     // sets the initial data.
-    console.log('VuseBuilder created');
     this.$builder.set(this.data);
     this.title = this.$builder.title;
     this.themes = this.$builder.themes;
@@ -10955,12 +10950,10 @@ var script = {
   mounted: function mounted () {
     var this$1 = this;
 
-    console.log('VuseBuilder mounted');
     this.$builder.rootEl = this.$refs.artboard;
     this.$parent.$on('saveVuseTemplate', this.submit);
 
     this.$on('vuseRemoveSection', function (section) {
-      console.log('vuseRemoveSection', section, this$1.$builder.sections);
       var sectionObj = this$1.$builder.sections.find(function (sec) { return sec.id === section.id; });
       if (sectionObj) {
         this$1.$builder.remove(sectionObj);
@@ -10978,7 +10971,6 @@ var script = {
   },
 
   beforeDestroy: function beforeDestroy () {
-    console.log('VuseBuilder beforeDestroy');
     this.$parent.$off('saveVuseTemplate');
     this.$off('vuseRemoveSection');
     this.$parent.$off('vuseClearAll');
@@ -10994,10 +10986,6 @@ var script = {
       this.toggleListVisibility();
     },
     addSection: function addSection (section, position) {
-      // if (event.srcElement) {
-      //   sectionObj = this.sections.find(sec => sec.name === event.srcElement.text);
-      // }
-      console.log('addSection', section, position, this.sections);
       this.$builder.add(section, position === undefined ? this.$builder.sections.length : position);
     },
     clearSections: function clearSections () {
@@ -11017,20 +11005,16 @@ var script = {
     },
     onDrag: function onDrag(event) {
       var currentSection = this.sections.find(function (sec) { return sec.name === event.item.text; });
-      console.log('onDrag this.$builder.isSorting', this.$builder, this.$builder.isSorting, event, currentSection);
       this.$set(this, 'currentSection', currentSection);
     },
     toggleListVisibility: function toggleListVisibility () {
       this.listShown = !this.listShown;
-      this.sortable.option('disabled', !this.listShown);
     },
     showList: function showList () {
       this.listShown = true;
-      this.sortable.option('disabled', false);
     },
     hideList: function hideList () {
       this.listShown = false;
-      this.sortable.option('disabled', true);
     },
     toggleGroupVisibility: function toggleGroupVisibility (e) {
       var element = e.target;
@@ -14308,7 +14292,6 @@ var Vuse = function Vuse (options) {
   this.assets = {
     css: options.assets.css || 'dist/css/app.css'
   };
-  console.log('vuse constructor', options);
   this.installPlugins();
 };
 
@@ -14321,7 +14304,6 @@ Vuse.prototype.add = function add (options, position) {
   if (this.sections.length < position) {
     position = this.sections.length;
   }
-  console.log('add section', options, position);
   if (position !== undefined) {
     this.sections.splice(position, 0, new Section(options));
     return;
@@ -14345,7 +14327,6 @@ Vuse.prototype.find = function find (id) {
 Vuse.prototype.remove = function remove (section) {
   var id = this.sections.findIndex(function (s) { return s.id === section.id; });
   this.sections.splice(id, 1);
-  console.log('section in remove after it has been deleted', section);
   section.destroy();
 };
 
@@ -14375,11 +14356,8 @@ Vuse.prototype.outputFragment = function outputFragment () {
 * clears the builder sections.
 */
 Vuse.prototype.clear = function clear () {
-  console.log.apply(console, [ 'clear before' ].concat( this.sections ));
   var tempSections = [].concat( this.sections );
-  // this.sections.forEach(section => section.destroy());
   this.sections = [];
-  console.log.apply(console, [ 'clear after' ].concat( this.sections ));
   return tempSections;
 };
 
