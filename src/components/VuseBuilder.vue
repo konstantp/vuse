@@ -38,7 +38,7 @@
         )
 
         button.btn.m-mini.m-danger(
-          v-if="!tempSections && actions.includes('clear')"
+          v-if="!tempSections && actions.includes('clear') && $builder.sections.length"
           v-text="'Clear all'"
           @click="clearSections"
         )
@@ -50,7 +50,7 @@
         )
 
         button.btn.m-mini(
-          v-if="actions.includes('reorder')"
+          v-if="actions.includes('reorder') && $builder.sections.length"
           v-text="$builder.isSorting ? 'Disable Reorder Mode' : 'Enable Reorder Mode'"
           @click="toggleSort"
         )
