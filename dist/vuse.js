@@ -10984,7 +10984,7 @@
     },
     methods: {
       newSection: function newSection () {
-        // add the section immediatly if none are present.
+        // add the section immediately if none are present.
         if (this.sections.length === 1) {
           this.addSection(this.sections[0]);
           return;
@@ -11076,10 +11076,10 @@
       onAdd: function onAdd (evt) {
         this.addSection(this.currentSection, evt.newIndex);
       },
+
       onUpdate: function onUpdate (evt) {
-        console.log('sort onUdpate', evt);
         this.$builder.sort(evt.oldIndex, evt.newIndex);
-      },
+      }
     }
   };
 
