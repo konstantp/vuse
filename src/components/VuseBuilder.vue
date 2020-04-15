@@ -2,15 +2,12 @@
   div
     div#artboard.artboard(
       ref="artboard"
-      :class="{ 'is-sorting': $builder.isSorting, 'is-editable': $builder.isEditing }"
+      :class="{ 'is-editable': $builder.isEditing }"
     )
       draggable(
           v-model="$builder.sections"
-          :options="{ sort: true,  animation: 150, scroll: true, scrollSpeed: 10, group: { name: 'artboard', pull: false, put: true }}"
-          @start="drag=true"
-          @end="drag=false"
+          :options="{ sort: true,  animation: 150, scroll: true, scrollSpeed: 10, swapThreshold: 0.65, invertSwap: false, direction: 'vertical', group: { name: 'artboard', pull: false, put: true }}"
           @add="onAdd"
-          @update="onUpdate"
         )
           component(v-for='section in $builder.sections'
             :is='section.name'
@@ -263,10 +260,6 @@ export default {
     onAdd (evt) {
       this.addSection(this.currentSection, evt.newIndex);
     },
-
-    onUpdate (evt) {
-      this.$builder.sort(evt.oldIndex, evt.newIndex);
-    }
   }
 };
 </script>
