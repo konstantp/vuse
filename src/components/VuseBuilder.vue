@@ -6,7 +6,7 @@
     )
       draggable(
           v-model="$builder.sections"
-          :options="{ sort: true, group: { name: 'artboard', pull: false, put: true }}"
+          :options="{ sort: true,  animation: 150, scroll: true, scrollSpeed: 10, group: { name: 'artboard', pull: false, put: true }}"
           @start="drag=true"
           @end="drag=false"
           @add="onAdd"
