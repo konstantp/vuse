@@ -11073,23 +11073,8 @@
       },
 
       onAdd: function onAdd (evt) {
-        console.log('onAdd', evt);
         this.addSection(this.currentSection, evt.newIndex);
       },
-
-      onUpdate: function onUpdate (evt) {
-        console.log('onUpdate', evt);
-        // this.$builder.sort(evt.oldIndex, evt.newIndex);
-      },
-
-      onChange: function onChange (evt) {
-        console.log('onChange', evt);
-        if (evt.added) {
-          console.log('correct position');
-          var oldIndex = evt.added.newIndex - 1 < 0 ? 0 : evt.added.newIndex - 1;
-          this.$builder.sort(oldIndex, evt.added.newIndex);
-        }
-      }
     }
   };
 
@@ -14246,24 +14231,6 @@
           return;
         }
         this.$section = this.$builder.find(this.$options.propsData.id);
-        this.$options.computed = {
-          $sectionData: function getSectionData () {
-            return this.$section.data;
-          },
-          gridClasses: function getGridClasses () {
-            var this$1 = this;
-
-            return this.$sectionData.columns.map(function (column) {
-              return Object.keys(column.grid).map(function (device) {
-                if (!column.grid[device]) {
-                  return '';
-                }
-                var prefix = this$1.$builder.columnsPrefix[device];
-                return ("" + prefix + (column.grid[device]));
-              });
-            })
-          }
-        };
       },
       updated: function updated () {
         var this$1 = this;
@@ -14271,6 +14238,24 @@
         Array.from(this.$el.querySelectorAll('[contentEditable]')).forEach(function (el) {
           el.contentEditable = this$1.$builder.isEditing;
         });
+      },
+      computed: {
+        $sectionData: function getSectionData () {
+          return this.$section.data;
+        },
+        gridClasses: function getGridClasses () {
+          var this$1 = this;
+
+          return this.$sectionData.columns.map(function (column) {
+            return Object.keys(column.grid).map(function (device) {
+              if (!column.grid[device]) {
+                return '';
+              }
+              var prefix = this$1.$builder.columnsPrefix[device];
+              return ("" + prefix + (column.grid[device]));
+            });
+          })
+        }
       }
     };
   }
